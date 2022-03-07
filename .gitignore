@@ -1,0 +1,9 @@
+# Ignore *EVERYTHING* by default
+/*
+/*/
+
+# Allow specific directories/files through
+!.gitignore
+!/Assets/Eremite
+!/ProjectSettings/
+
