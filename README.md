@@ -2,16 +2,28 @@
 
 # Eremite's VRChat Stuff - Udon Edition
 
+![](https://i.imgur.com/FO5AyXY.png) Was this mess useful? https://ko-fi.com/eremite
+
 This repo is here to contain a bunch of VRChat related notes, prefabs and demos.  It serves both as a way of storing notes for myself and for showing friends/fellow creators how I go about certain things.
 
 There are various `README.md` files sprinkled around the repo that have more information about the specific folder.  Please refer to them for more detail.
 
 For SDK2 stuff, see the [old repo here](https://github.com/Erumite/Eremite_VRC), though keep in mind it's no longer maintained and SDK2 will likely be deprecated in the future.
 
-#### You will need:
+#### Requirements
+You'll need to install these first as some of the stuff in here relies on them:
+
 * VRChat SDK 3.0 - https://vrchat.com/home/download
 * UdonSharp - https://github.com/MerlinVR/UdonSharp
 * UdonToolkit - https://github.com/orels1/UdonToolkit
+
+Also, for best results, set the Editor to the `UdonToolkitEditor`:
+
+```
+Edit -> Project Settings -> "Udon Sharp" tab -> Default Behavior Editor = "UdonToolkit Editor"
+```
+
+![](Assets/Eremite/_doc/swap_editor.png)
 
 #### How do I use this?
 I tend to not make unity packages for this stuff, so cloning the repo and importing the `Assets/Eremite` directory will probably be sufficient.
