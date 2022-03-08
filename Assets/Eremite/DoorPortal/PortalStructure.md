@@ -1,7 +1,7 @@
 # Anatomy of a Portal
 This is what a portal looks like in game after the client generates the internal game objects, assuming the root object is named "Portal".
 
-Generated using [this UdonBehaviour](/Assets/Eremite/Keypad-3D)
+Generated using [this UdonBehaviour](/Assets/Eremite/_shared/Scripts/LogChildren.cs)
 
 These can be interacted with via Udon# or Animators.
 
