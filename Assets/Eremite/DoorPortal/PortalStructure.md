@@ -6,49 +6,59 @@ Generated using [this UdonBehaviour](/Assets/Eremite/_shared/Scripts/LogChildren
 These can be interacted with via Udon# or Animators.
 
 ```
-/Portal
- - Component: Portal (UnityEngine.Transform)
- - Component: Portal (VRC.SDK3.Components.VRCPortalMarker)
- - Component: Portal (VRC.Udon.UdonBehaviour)
- - Component: View 12 on Portal
+/DoorPortal/Portal
+* Position: (-0.4, 0.0, 0.0)
+* Rotation: (0.0, 0.0, 0.0, 1.0)
+*    Scale: (1.0, 1.0, 1.0)
+  - Component: Portal (UnityEngine.Transform)
+  - Component: Portal (VRC.SDK3.Components.VRCPortalMarker)
 
-/Portal/PortalInternal(Clone)
- - Component: PortalInternal(Clone) (UnityEngine.Transform)
- - Component: PortalInternal(Clone) (UnityEngine.BoxCollider)
+/DoorPortal/Portal/preview_image
+* Position: (0.6, 1.4, 0.0)
+* Rotation: (-0.7, 0.0, 0.0, 0.7)
+*    Scale: (1.0, 1.0, 1.0)
+  - Component: preview_image (UnityEngine.Transform)
 
-/Portal/PortalInternal(Clone)/PortalGraphics
- - Component: PortalGraphics (UnityEngine.Transform)
+/DoorPortal/Portal/world_name
+* Position: (0.0, 2.5, 0.0)
+* Rotation: (0.0, 0.0, 0.0, 1.0)
+*    Scale: (1.0, 1.0, 1.0)
+  - Component: world_name (UnityEngine.Transform)
 
-/Portal/PortalInternal(Clone)/PortalGraphics/PortalCore
- - Component: PortalCore (UnityEngine.Transform)
- - Component: PortalCore (UnityEngine.MeshFilter)
- - Component: PortalCore (UnityEngine.MeshRenderer)
+/DoorPortal/Portal/PortalInternal(Clone)
+* Position: (0.0, 0.0, 0.0)
+* Rotation: (0.0, 0.0, 0.0, 1.0)
+*    Scale: (1.0, 1.1, 1.0)
+  - Component: PortalInternal(Clone) (UnityEngine.Transform)
+  - Component: PortalInternal(Clone) (UnityEngine.BoxCollider)
 
-/Portal/PortalInternal(Clone)/PortalGraphics/PortalFringe
- - Component: PortalFringe (UnityEngine.Transform)
- - Component: PortalFringe (UnityEngine.ParticleSystem)
- - Component: PortalFringe (UnityEngine.ParticleSystemRenderer)
+/DoorPortal/Portal/PortalInternal(Clone)/PortalGraphics
+* Position: (0.0, 0.0, 0.0)
+* Rotation: (0.0, 0.0, 0.0, 1.0)
+*    Scale: (1.0, 1.0, 1.0)
+  - Component: PortalGraphics (UnityEngine.Transform)
 
-/Portal/PortalInternal(Clone)/NameTag
- - Component: NameTag (UnityEngine.Transform)
+/DoorPortal/Portal/PortalInternal(Clone)/PortalGraphics/PortalCore
+* Position: (0.6, 1.3, 0.0)
+* Rotation: (-0.7, 0.0, 0.0, 0.7)
+*    Scale: (0.1, 0.0, 0.2)
+  - Component: PortalCore (UnityEngine.Transform)
+  - Component: PortalCore (UnityEngine.MeshFilter)
+  - Component: PortalCore (UnityEngine.MeshRenderer)
 
-/Portal/PortalInternal(Clone)/NameTag/TextMesh
- - Component: TextMesh (UnityEngine.RectTransform)
- - Component: TextMesh (UnityEngine.MeshRenderer)
- - Component: TextMesh (UnityEngine.CanvasRenderer)
- - Component: TextMesh (TMPro.TextMeshPro)
- - Component: TextMesh (UnityEngine.MeshFilter)
+/DoorPortal/Portal/PortalInternal(Clone)/NameTag
+* Position: (0.0, 2.3, 0.0)
+* Rotation: (0.1, -0.6, 0.1, 0.8)
+*    Scale: (1.0, 1.0, 1.0)
+  - Component: NameTag (UnityEngine.Transform)
 
-/Portal/PortalInternal(Clone)/PlatformIcons
- - Component: PlatformIcons (UnityEngine.Transform)
-
-/Portal/PortalInternal(Clone)/PlatformIcons/Quad
- - Component: Quad (UnityEngine.Transform)
- - Component: Quad (UnityEngine.MeshFilter)
- - Component: Quad (UnityEngine.MeshRenderer)
-
-/Portal/PortalInternal(Clone)/PlatformIcons/Quad (1)
- - Component: Quad (1) (UnityEngine.Transform)
- - Component: Quad (1) (UnityEngine.MeshFilter)
- - Component: Quad (1) (UnityEngine.MeshRenderer
+/DoorPortal/Portal/PortalInternal(Clone)/NameTag/TextMesh
+* Position: (0.0, 0.1, 0.0)
+* Rotation: (0.0, 1.0, 0.0, 0.0)
+*    Scale: (1.0, 1.0, 1.0)
+  - Component: TextMesh (UnityEngine.RectTransform)
+  - Component: TextMesh (UnityEngine.MeshRenderer)
+  - Component: TextMesh (UnityEngine.CanvasRenderer)
+  - Component: TextMesh (TMPro.TextMeshPro)
+  - Component: TextMesh (UnityEngine.MeshFilter)
 ```
