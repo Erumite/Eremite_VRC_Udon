@@ -13,18 +13,6 @@ These can be interacted with via Udon# or Animators.
   - Component: Portal (UnityEngine.Transform)
   - Component: Portal (VRC.SDK3.Components.VRCPortalMarker)
 
-/DoorPortal/Portal/preview_image
-* Position: (0.6, 1.4, 0.0)
-* Rotation: (-0.7, 0.0, 0.0, 0.7)
-*    Scale: (1.0, 1.0, 1.0)
-  - Component: preview_image (UnityEngine.Transform)
-
-/DoorPortal/Portal/world_name
-* Position: (0.0, 2.5, 0.0)
-* Rotation: (0.0, 0.0, 0.0, 1.0)
-*    Scale: (1.0, 1.0, 1.0)
-  - Component: world_name (UnityEngine.Transform)
-
 /DoorPortal/Portal/PortalInternal(Clone)
 * Position: (0.0, 0.0, 0.0)
 * Rotation: (0.0, 0.0, 0.0, 1.0)
