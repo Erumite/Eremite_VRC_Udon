@@ -38,6 +38,7 @@ public class DoorPortal : UdonSharpBehaviour
     private Transform portalPlatformIcons;
     private Transform portalCore;
     private Transform portalFringe;
+    private BoxCollider portalCollider;
 
     void Start()
     {
@@ -50,12 +51,31 @@ public class DoorPortal : UdonSharpBehaviour
         }
     }
 
+     // Set all the objects in the portal - if not found, log to debug log.
     private void getPortalObjects() {
+        // Portal Graphics : Portal preview image and fringe particles parent.
         portalGraphics = portal.gameObject.transform.Find("PortalInternal(Clone)/PortalGraphics");
+        if (!portalGraphics) { logStuff("Couldn't find Portal Graphics transform.");}
+        // Portal Name Tag : the text of the world name that shows up above the portal normally.
         portalNameTag = portal.transform.Find("PortalInternal(Clone)/NameTag");
+        if (!portalNameTag) { logStuff("Couldn't find Portal Name Tab transform.");}
+        // PortalCore : Contains the preview image for the world.
         portalCore =  portal.transform.Find("PortalInternal(Clone)/PortalGraphics/PortalCore");
+        if (!portalCore) { logStuff("Couldn't find Portal Core transform.");}
+        // Portal Fringe : Particle system around the edge of the portal.
         portalFringe = portal.transform.Find("PortalInternal(Clone)/PortalGraphics/PortalFringe");
+        if (!portalFringe) { logStuff("Couldn't find Portal Fringe transform.");}
+        // Platform Icons: Shows if the world is quest/PC compatible.
         portalPlatformIcons = portal.transform.Find("PortalInternal(Clone)/PlatformIcons");
+        if (!portalPlatformIcons) { logStuff("Couldn't find the Portal Platform Icons transform.");}
+        // Portal Collider = the collider that you interact with to enter the portal.
+        var portalColliderObject = portal.transform.Find("PortalInternal(Clone)");
+        if (portalColliderObject) {
+            portalCollider = portalColliderObject.GetComponent<BoxCollider>();
+            if (!portalCollider) { logStuff("Found PortalInternal, but couldn't find its box collider.");}
+        } else {
+            logStuff("Couldn't find the PortalInternal(Clone) game object.");
+        }
     }
 
     private void hideShowPreview() {
@@ -92,6 +112,15 @@ public class DoorPortal : UdonSharpBehaviour
 
     }
 
+    public void Unlock() {
+
+    }
+
+    private void lockPortal(bool locked){
+        // negate locked - if locked=true, collision=false (etc)
+         portalCollider.enabled = !locked;
+    }
+
     public void setupPortal() {
         getPortalObjects();
         hideShowPreview();
@@ -101,5 +130,6 @@ public class DoorPortal : UdonSharpBehaviour
     }
     
     private void OnPlayerTriggerEnter(VRCPlayerApi player) {
+        // WIP : Eventually play special effects/etc when someone enters.
     }
 }
