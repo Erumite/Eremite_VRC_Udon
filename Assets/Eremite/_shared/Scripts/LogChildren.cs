@@ -17,9 +17,9 @@ public class LogChildren : UdonSharpBehaviour
         var allChildren = objectToInspect.GetComponentsInChildren<Transform>();
         foreach ( Transform child in allChildren ) {
             GetGameObjectPath(child.gameObject);
-            Debug.Log(" - Position: " + child.transform.localPosition.ToString());
-            Debug.Log(" - Rotation: " + child.transform.localRotation.ToString());
-            Debug.Log(" -    Scale: " + child.transform.localScale.ToString());
+            Debug.Log("* Position: " + child.transform.localPosition.ToString());
+            Debug.Log("* Rotation: " + child.transform.localRotation.ToString());
+            Debug.Log("*    Scale: " + child.transform.localScale.ToString());
             Component[] components = child.GetComponents(typeof(Component));
             foreach(Component component in components) {
                 Debug.Log(" - Component: " + component.ToString());
