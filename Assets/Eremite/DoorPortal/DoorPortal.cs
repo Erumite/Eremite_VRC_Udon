@@ -6,8 +6,14 @@ using VRC.Udon;
 public class DoorPortal : UdonSharpBehaviour
 {
     [Header("Door Portal Config")]
+    [Tooltip("This Udon Behavior")]
+    public UdonBehaviour doorPortalScript;
+    [Tooltip("Animator that handles the Door opening/closing.")]
+    public Animator doorPortalAnimator;
     [Tooltip("The VRCPortalMarker script set up with the world ID this door should lead to.")]
     public VRC_PortalMarker portal;
+    [Tooltip("The doorknob - object that is interacted with to open/close the door.")]
+    public BoxCollider doorknobCollider;
     [Header("Door Portal Options")]
     [Tooltip("Show the world image at a specified location.")]
     public bool showPreview = false;
@@ -25,11 +31,22 @@ public class DoorPortal : UdonSharpBehaviour
     [UdonSynced]
     [Tooltip("(SYNCED) If the door is locked by default, it will need to be unlocked before it can be opened and the portal used.")]
     public bool isLocked = false;
-    private bool localIsLocked = false;
+    private bool localIsLocked;
+    [Tooltip("Audio to play when the door is locked and doorknob is clicked.")]
+    public AudioClip lockSound;
+    [Tooltip("Audio Source that handles the above clip.")]
+    public AudioSource lockSoundSource;
+
+    [UdonSynced]
+    [Tooltip("Should the door be open by default? (not recommended)")]
+    public bool doorIsOpen = false;
+    private bool localDoorIsOpen;
+
     [Tooltip("The value of the key required to open the door. (0 = no key value required, just an Unlock call)")]
     public int keyValue = 0;
 
     // optional debugging to log for dev.
+    [Header("Debugging - Tag = (DoorPortal)")]
     public bool debugLog = false;
 
     // internals
@@ -40,17 +57,23 @@ public class DoorPortal : UdonSharpBehaviour
     private Transform portalFringe;
     private BoxCollider portalCollider;
 
+
     void Start()
     {
         setupPortal();
+        // Set the lock sound - allow editing from UdonBehavior rather than updating the audio source.
+        lockSoundSource.clip = lockSound;
     }
 
+
+    // Uniform logging message for searching debug log.
     private void logStuff(string message){
         if (debugLog == true) {
             Debug.Log("[Eremite](DoorPortal) : " + message);
         }
     }
 
+    #region "Portal Setup and Toggle"
      // Set all the objects in the portal - if not found, log to debug log.
     private void getPortalObjects() {
         // Portal Graphics : Portal preview image and fringe particles parent.
@@ -78,6 +101,7 @@ public class DoorPortal : UdonSharpBehaviour
         }
     }
 
+
     private void hideShowPreview() {
         // Make sure the portal core transform is not null.
         if (portalCore && portalGraphics) {
@@ -104,22 +128,67 @@ public class DoorPortal : UdonSharpBehaviour
                 portalNameTag.SetPositionAndRotation(showWorldNameLocation.position, showWorldNameLocation.rotation);
                 portalNameTag.localScale = portalNameTag.localScale * showWorldNameSize;
                 logStuff("Moved portal world name to its new position.");
-            }
-        } else {
+            } else {
             portalNameTag.gameObject.SetActive(false);
             logStuff("Disabled portal's world name.");
+            }
         }
-
     }
 
+    #endregion "Portal Setup and Toggle"
+    #region "Networking Stuff"
+
+    public override void OnDeserialization(){
+        if ( localIsLocked != isLocked ){
+            localIsLocked = isLocked;
+        }
+        if ( localDoorIsOpen != doorIsOpen ){
+            localDoorIsOpen = doorIsOpen;
+        }
+        if (!localIsLocked) {
+            OpenDoor(localDoorIsOpen);
+        }
+        logStuff("OnDeserialization: Locked=(L:" + localIsLocked.ToString() + "/G:" + isLocked.ToString() + ") | Open=(L:" + localDoorIsOpen.ToString() + "/G:" + doorIsOpen.ToString() +")");
+    }
     public void Unlock() {
+        localIsLocked = false;
+        isLocked = false;
+    }
+    #endregion "Networking Stuff"
+    #region "Portal Locking"
 
+    #endregion "Portal Locking"
+    # region "Door open and close" 
+
+    // Trigger animations and whatnot for door opening and closing
+    public void turnDoorKnob() {
+        if ( !localDoorIsOpen && localIsLocked) {
+            // Toggle off/on with auto-play to avoid OneShot spam.
+            lockSoundSource.gameObject.SetActive(false);
+            lockSoundSource.gameObject.SetActive(true);
+            logStuff("Door is locked - playing lock sound.");
+        } else {
+            if(!localDoorIsOpen) {
+                doorIsOpen = !doorIsOpen;
+                logStuff("Opening Door");
+            } else if (localDoorIsOpen) {
+                doorIsOpen = !doorIsOpen;
+                logStuff("Closing Door.");
+            }
+            localDoorIsOpen = doorIsOpen;
+            RequestSerialization();
+            OpenDoor(localDoorIsOpen);
+        }
+        logStuff("TurnDoorKnob: Locked=(L:" + localIsLocked.ToString() + "/G:" + isLocked.ToString() + ") | Open=(L:" + localDoorIsOpen.ToString() + "/G:" + doorIsOpen.ToString() +")");
     }
 
-    private void lockPortal(bool locked){
-        // negate locked - if locked=true, collision=false (etc)
-         portalCollider.enabled = !locked;
+    public void OpenDoor(bool opened){
+        doorPortalAnimator.SetBool("Open", opened);
+        portalCollider.enabled = opened;
     }
+    
+
+    #endregion "Door open and close"
 
     public void setupPortal() {
         getPortalObjects();
@@ -127,6 +196,8 @@ public class DoorPortal : UdonSharpBehaviour
         hideShowWorldName();
         // Just hide the platform icons, I guess.  May make this an option later. 
         if ( portalPlatformIcons ) { portalPlatformIcons.gameObject.SetActive(false); }
+        portalCollider.transform.localScale = new Vector3(1.0f,1.1f,0.1f);
+        portalCollider.enabled = localDoorIsOpen;
     }
     
     private void OnPlayerTriggerEnter(VRCPlayerApi player) {
