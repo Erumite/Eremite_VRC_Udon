@@ -32,6 +32,10 @@ public class DoorPortal : UdonSharpBehaviour
     [Tooltip("(SYNCED) If the door is locked by default, it will need to be unlocked before it can be opened and the portal used.")]
     public bool isLocked = false;
     private bool localIsLocked;
+    [Tooltip("The Key Hole's game object.")]
+    public GameObject keyHole;
+    [Tooltip("Should the keyhole be destroyed when unlocked?")]
+    public bool destroyKeyholeWhenUnlocked;
     [Tooltip("Audio to play when the door is locked and doorknob is clicked.")]
     public AudioClip lockSound;
     [Tooltip("Audio Source that handles the above clip.")]
@@ -63,6 +67,8 @@ public class DoorPortal : UdonSharpBehaviour
         setupPortal();
         // Set the lock sound - allow editing from UdonBehavior rather than updating the audio source.
         lockSoundSource.clip = lockSound;
+        localDoorIsOpen=doorIsOpen;
+        localIsLocked=isLocked;
     }
 
 
@@ -109,9 +115,11 @@ public class DoorPortal : UdonSharpBehaviour
                 // Move core to position/rotation and modify the scale.
                 portalCore.SetPositionAndRotation(showPreviewLocation.position, showPreviewLocation.rotation);
                 portalCore.localScale = portalCore.localScale * showPreviewSize;
+                portalCore.gameObject.SetActive(localDoorIsOpen);
                 logStuff("Moved portal world preview to its new position.");
                // disable the fringe particle system
                 if ( portalFringe ) { portalFringe.gameObject.SetActive(false); }
+                
                 logStuff("Disabled Portal Fringe");
             } else { 
             // otherwise, just disable all this stuff.
@@ -127,6 +135,7 @@ public class DoorPortal : UdonSharpBehaviour
             if (showWorldName == true ) { 
                 portalNameTag.SetPositionAndRotation(showWorldNameLocation.position, showWorldNameLocation.rotation);
                 portalNameTag.localScale = portalNameTag.localScale * showWorldNameSize;
+                portalNameTag.gameObject.SetActive(localDoorIsOpen);
                 logStuff("Moved portal world name to its new position.");
             } else {
             portalNameTag.gameObject.SetActive(false);
@@ -142,6 +151,10 @@ public class DoorPortal : UdonSharpBehaviour
         if ( localIsLocked != isLocked ){
             localIsLocked = isLocked;
         }
+        // Destroy the keyhole if it's unlocked and the option is checked.
+        if (keyHole && !localIsLocked && destroyKeyholeWhenUnlocked){
+            Destroy(keyHole);
+        }
         if ( localDoorIsOpen != doorIsOpen ){
             localDoorIsOpen = doorIsOpen;
         }
@@ -151,9 +164,11 @@ public class DoorPortal : UdonSharpBehaviour
         logStuff("OnDeserialization: Locked=(L:" + localIsLocked.ToString() + "/G:" + isLocked.ToString() + ") | Open=(L:" + localDoorIsOpen.ToString() + "/G:" + doorIsOpen.ToString() +")");
     }
     public void Unlock() {
-        localIsLocked = false;
         isLocked = false;
+        RequestSerialization();
+        OnDeserialization();
     }
+
     #endregion "Networking Stuff"
     #region "Portal Locking"
 
@@ -185,6 +200,13 @@ public class DoorPortal : UdonSharpBehaviour
     public void OpenDoor(bool opened){
         doorPortalAnimator.SetBool("Open", opened);
         portalCollider.enabled = opened;
+        // If the preview/name are enabled, turn them off when closed, on when opened.
+        if (showPreview) {
+            portalCore.gameObject.SetActive(opened);
+        }
+        if (showWorldName) {
+            portalNameTag.gameObject.SetActive(opened);
+        }
     }
     
 
@@ -196,11 +218,13 @@ public class DoorPortal : UdonSharpBehaviour
         hideShowWorldName();
         // Just hide the platform icons, I guess.  May make this an option later. 
         if ( portalPlatformIcons ) { portalPlatformIcons.gameObject.SetActive(false); }
-        portalCollider.transform.localScale = new Vector3(1.0f,1.1f,0.1f);
-        portalCollider.enabled = localDoorIsOpen;
+        if (portalCollider) {
+            portalCollider.transform.localScale = new Vector3(1.0f,1.1f,0.1f);
+            portalCollider.enabled = localDoorIsOpen;
+        }
     }
     
     private void OnPlayerTriggerEnter(VRCPlayerApi player) {
-        // WIP : Eventually play special effects/etc when someone enters.
+        doorPortalAnimator.SetTrigger("EnterPortal");
     }
 }
