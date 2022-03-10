@@ -5,20 +5,101 @@ using VRC.Udon;
 
 public class DoorPortal : UdonSharpBehaviour
 {
+    [Header("Door Portal Config")]
+    [Tooltip("The VRCPortalMarker script set up with the world ID this door should lead to.")]
     public VRC_PortalMarker portal;
+    [Header("Door Portal Options")]
+    [Tooltip("Show the world image at a specified location.")]
+    public bool showPreview = false;
+    [Tooltip("Location and Rotation that the preview will appear.")]
+    public Transform showPreviewLocation;
+    [Tooltip("Scale the preview. (1.0 = normal size ; 0.1 = 10% size)")]
+    public float showPreviewSize = 0.1f;
+    [Tooltip("Show World Name?")]
+    public bool showWorldName = false;
+    [Tooltip("Where should the world name show up?")]
+    public Transform showWorldNameLocation;
+    [Tooltip("Optionally scale the world name.")]
+    public float showWorldNameSize = 1.0f;
+
+    [UdonSynced]
+    [Tooltip("(SYNCED) If the door is locked by default, it will need to be unlocked before it can be opened and the portal used.")]
+    public bool isLocked = false;
+    private bool localIsLocked = false;
+    [Tooltip("The value of the key required to open the door. (0 = no key value required, just an Unlock call)")]
+    public int keyValue = 0;
+
+    // optional debugging to log for dev.
+    public bool debugLog = false;
+
+    // internals
+    private Transform portalGraphics;
+    private Transform portalNameTag;
+    private Transform portalPlatformIcons;
+    private Transform portalCore;
+    private Transform portalFringe;
+
     void Start()
     {
-        hidePortalBits();
+        setupPortal();
     }
 
-    public void hidePortalBits(){
-        var portalGraphics = portal.gameObject.transform.Find("PortalInternal(Clone)/PortalGraphics");
-        if ( portalGraphics ) { portalGraphics.gameObject.SetActive(false) ; }
-        var portalNameTag = portal.transform.Find("PortalInternal(Clone)/NameTag");
-        if ( portalNameTag ) { portalNameTag.gameObject.SetActive(false) ; }
-        var portalPlatformIcons = portal.transform.Find("PortalInternal(Clone)/PlatformIcons");
-        if ( portalPlatformIcons ) { portalPlatformIcons.gameObject.SetActive(false) ; }
+    private void logStuff(string message){
+        if (debugLog == true) {
+            Debug.Log("[Eremite](DoorPortal) : " + message);
+        }
     }
+
+    private void getPortalObjects() {
+        portalGraphics = portal.gameObject.transform.Find("PortalInternal(Clone)/PortalGraphics");
+        portalNameTag = portal.transform.Find("PortalInternal(Clone)/NameTag");
+        portalCore =  portal.transform.Find("PortalInternal(Clone)/PortalGraphics/PortalCore");
+        portalFringe = portal.transform.Find("PortalInternal(Clone)/PortalGraphics/PortalFringe");
+        portalPlatformIcons = portal.transform.Find("PortalInternal(Clone)/PlatformIcons");
+    }
+
+    private void hideShowPreview() {
+        // Make sure the portal core transform is not null.
+        if (portalCore && portalGraphics) {
+            if ( showPreview == true ) {
+                // Move core to position/rotation and modify the scale.
+                portalCore.SetPositionAndRotation(showPreviewLocation.position, showPreviewLocation.rotation);
+                portalCore.localScale = portalCore.localScale * showPreviewSize;
+                logStuff("Moved portal world preview to its new position.");
+               // disable the fringe particle system
+                if ( portalFringe ) { portalFringe.gameObject.SetActive(false); }
+                logStuff("Disabled Portal Fringe");
+            } else { 
+            // otherwise, just disable all this stuff.
+            portalGraphics.gameObject.SetActive(false);
+            logStuff("Disabled portal graphics / preview.");
+            }
+        }
+    }
+
+    private void hideShowWorldName() {
+        // If we want to show the name, move it to the right location/scale.
+        if (portalNameTag) {
+            if (showWorldName == true ) { 
+                portalNameTag.SetPositionAndRotation(showWorldNameLocation.position, showWorldNameLocation.rotation);
+                portalNameTag.localScale = portalNameTag.localScale * showWorldNameSize;
+                logStuff("Moved portal world name to its new position.");
+            }
+        } else {
+            portalNameTag.gameObject.SetActive(false);
+            logStuff("Disabled portal's world name.");
+        }
+
+    }
+
+    public void setupPortal() {
+        getPortalObjects();
+        hideShowPreview();
+        hideShowWorldName();
+        // Just hide the platform icons, I guess.  May make this an option later. 
+        if ( portalPlatformIcons ) { portalPlatformIcons.gameObject.SetActive(false); }
+    }
+    
     private void OnPlayerTriggerEnter(VRCPlayerApi player) {
     }
 }
