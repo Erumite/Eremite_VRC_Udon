@@ -164,6 +164,7 @@ public class DoorPortal : UdonSharpBehaviour
         logStuff("OnDeserialization: Locked=(L:" + localIsLocked.ToString() + "/G:" + isLocked.ToString() + ") | Open=(L:" + localDoorIsOpen.ToString() + "/G:" + doorIsOpen.ToString() +")");
     }
     public void Unlock() {
+        Networking.SetOwner(Networking.LocalPlayer, doorPortalScript.gameObject);
         isLocked = false;
         RequestSerialization();
         OnDeserialization();
@@ -183,16 +184,13 @@ public class DoorPortal : UdonSharpBehaviour
             lockSoundSource.gameObject.SetActive(true);
             logStuff("Door is locked - playing lock sound.");
         } else {
-            if(!localDoorIsOpen) {
-                doorIsOpen = !doorIsOpen;
-                logStuff("Opening Door");
-            } else if (localDoorIsOpen) {
-                doorIsOpen = !doorIsOpen;
-                logStuff("Closing Door.");
-            }
-            localDoorIsOpen = doorIsOpen;
+
+            Networking.SetOwner(Networking.LocalPlayer, doorPortalScript.gameObject);
+            // if open, this closes it  and vice versa
+            doorIsOpen = !doorIsOpen;
+            logStuff("Opening Door: " + doorIsOpen.ToString());
             RequestSerialization();
-            OpenDoor(localDoorIsOpen);
+            OnDeserialization();
         }
         logStuff("TurnDoorKnob: Locked=(L:" + localIsLocked.ToString() + "/G:" + isLocked.ToString() + ") | Open=(L:" + localDoorIsOpen.ToString() + "/G:" + doorIsOpen.ToString() +")");
     }
@@ -224,7 +222,7 @@ public class DoorPortal : UdonSharpBehaviour
         }
     }
     
-    private void OnPlayerTriggerEnter(VRCPlayerApi player) {
+    public override void OnPlayerTriggerEnter(VRCPlayerApi player) {
         doorPortalAnimator.SetTrigger("EnterPortal");
     }
 }

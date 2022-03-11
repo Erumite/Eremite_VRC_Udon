@@ -32,7 +32,8 @@ public class DoorPortalKeying : UdonSharpBehaviour
             doorPortalController.SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, "Unlock");
             logStuff("Found key in the list. Door will unlock!");
             if (destroyKeyOnUse == true) {
-                Destroy(collision.gameObject);
+                var selfDestruct = (UdonBehaviour)collision.gameObject.GetComponent(typeof(UdonBehaviour));
+                if (selfDestruct) { selfDestruct.SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, "goodbyeWorld"); }
                 logStuff("Key was set to destroy on use.  Nuking it.");
             }
             break;

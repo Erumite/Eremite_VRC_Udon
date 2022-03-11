@@ -151,7 +151,7 @@ Transform:
   m_LocalScale: {x: 1, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 3646299414218935697}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!199 &2750358014110132787
 ParticleSystemRenderer:
@@ -2899,8 +2899,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   world: 0
-  roomId: wrld_cb1c7e30-b31e-4aa6-9e15-82758f4d5a9c
-  customPortalName: Color Friends
+  roomId: wrld_b0e9cce2-9c41-48d3-a134-b1f187203cba
+  customPortalName: 
   sortHeading: 5
   sortOrder: 0
   offset: 0
@@ -2910,36 +2910,6 @@ MonoBehaviour:
   effectPrefabName: 
   roomName: 
   updateFlag: 0
---- !u!1 &3823829323661043194
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3823829323661043193}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3823829323661043193
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3823829323661043194}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 3646299414218935697}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3823829324068641117
 GameObject:
   m_ObjectHideFlags: 0
@@ -3488,7 +3458,7 @@ Transform:
   m_LocalScale: {x: 1, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 3646299414218935697}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &3823829325076449240
 ParticleSystem:
@@ -6129,7 +6099,6 @@ Transform:
   - {fileID: 1897938229859355985}
   - {fileID: 4182104132149737300}
   - {fileID: 3823829323038507716}
-  - {fileID: 3823829323661043193}
   - {fileID: 3823829325076449242}
   - {fileID: 2750358014110132785}
   - {fileID: 3261404962686686698}
@@ -6236,7 +6205,7 @@ Transform:
   m_LocalScale: {x: 0.020000003, y: 0.020000001, z: 0.019999998}
   m_Children: []
   m_Father: {fileID: 3646299414218935697}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: -138.26701}
 --- !u!33 &1370508896517994384
 MeshFilter:
