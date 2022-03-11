@@ -46,6 +46,7 @@ Once that's sorted, you can just do a git pull for updates.
 # Releases
  * [3D Keypad](Assets/Eremite/Keypad-3D) - A keypad that uses 3D objects rather than a Unity UI
  * [Door Portals](Assets/Eremite/DoorPortal) POC - A replacement for VRChat portals in the form of a door.
+ * [Camera Drone](Assets/Eremite/CameraDrone) - Little drone you can fly around in a world with some optional doodads
 
 ---
 
