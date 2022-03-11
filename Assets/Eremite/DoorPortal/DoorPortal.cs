@@ -73,6 +73,7 @@ public class DoorPortal : UdonSharpBehaviour
         setupPortal();
         // Set the lock sound - allow editing from UdonBehavior rather than updating the audio source.
         lockSoundSource.clip = lockSound;
+        // Run update after we've set up our baseline loaded state.
         OnDeserialization();
     }
 
@@ -122,17 +123,9 @@ public class DoorPortal : UdonSharpBehaviour
         if (portalCore && portalGraphics) {
             if ( showPreview == true ) {
                 // Move core to position/rotation and modify the scale.
-                portalCore.SetPositionAndRotation(showPreviewLocation.position, showPreviewLocation.rotation);
+                ///  F*** It - Disabling mesh renderer at startup is broken, so just move it to Timbuktu.
+                portalCore.SetPositionAndRotation(new Vector3(9999.0f,9999.0f,9999.0f), new Quaternion(0.0f, 0.0f, 0.0f, 1.0f));
                 portalCore.localScale = portalCore.localScale * showPreviewSize;
-                var pcMesh = portalCore.gameObject.GetComponent<MeshRenderer>();
-                if (pcMesh) { 
-                    pcMesh.enabled = false;
-                    logStuff("Disabled Mesh renderer for preview:  Active: " + pcMesh.enabled.ToString());
-                }
-                // So the above works and shows as disabled, but it still shows up for some reason.
-                // Works fine after the fact though, so something is re-enabling it after this disables it.
-                ///  likely something client-end.  This will do for now.
-                portalCore.gameObject.SetActive(false);
                 logStuff("Moved portal world preview to its new position.  Opened: " + localDoorIsOpen.ToString());
                // disable the fringe particle system
                 if ( portalFringe ) { portalFringe.gameObject.SetActive(false); }
@@ -217,8 +210,8 @@ public class DoorPortal : UdonSharpBehaviour
         portalCollider.enabled = opened;
         // If the preview/name are enabled, turn them off when closed, on when opened.
         if (showPreview) {
-            // "Temp" hack since it's not wanting to disable mesh renderer at startup.
-            portalCore.gameObject.SetActive(true);
+            // Can't disable mesh renderer at startup, so it gets moved.  Move it back to the right spot.
+            portalCore.SetPositionAndRotation(showPreviewLocation.position, showPreviewLocation.rotation);
             // Disable the mesh instead - otherwise the preview image seems to break.
             var pcMesh = portalCore.gameObject.GetComponent<MeshRenderer>();
             if (pcMesh) { pcMesh.enabled = opened; }
