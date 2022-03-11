@@ -61,21 +61,30 @@ public class DoorPortal : UdonSharpBehaviour
     private Transform portalFringe;
     private BoxCollider portalCollider;
 
+    // Uniform logging message for searching debug log.
+    private void logStuff(string message){
+        if (debugLog == true) {
+            Debug.Log("[Eremite](DoorPortal) : " + message);
+        }
+    }
 
     void Start()
     {
         setupPortal();
         // Set the lock sound - allow editing from UdonBehavior rather than updating the audio source.
         lockSoundSource.clip = lockSound;
-        localDoorIsOpen=doorIsOpen;
-        localIsLocked=isLocked;
+        OnDeserialization();
     }
 
-
-    // Uniform logging message for searching debug log.
-    private void logStuff(string message){
-        if (debugLog == true) {
-            Debug.Log("[Eremite](DoorPortal) : " + message);
+    public void setupPortal() {
+        getPortalObjects();
+        hideShowPreview();
+        hideShowWorldName();
+        // Just hide the platform icons, I guess.  May make this an option later. 
+        if ( portalPlatformIcons ) { portalPlatformIcons.gameObject.SetActive(false); }
+        if (portalCollider) {
+            portalCollider.transform.localScale = new Vector3(1.0f,1.1f,0.1f);
+            portalCollider.enabled = localDoorIsOpen;
         }
     }
 
@@ -115,8 +124,16 @@ public class DoorPortal : UdonSharpBehaviour
                 // Move core to position/rotation and modify the scale.
                 portalCore.SetPositionAndRotation(showPreviewLocation.position, showPreviewLocation.rotation);
                 portalCore.localScale = portalCore.localScale * showPreviewSize;
-                portalCore.gameObject.SetActive(localDoorIsOpen);
-                logStuff("Moved portal world preview to its new position.");
+                var pcMesh = portalCore.gameObject.GetComponent<MeshRenderer>();
+                if (pcMesh) { 
+                    pcMesh.enabled = false;
+                    logStuff("Disabled Mesh renderer for preview:  Active: " + pcMesh.enabled.ToString());
+                }
+                // So the above works and shows as disabled, but it still shows up for some reason.
+                // Works fine after the fact though, so something is re-enabling it after this disables it.
+                ///  likely something client-end.  This will do for now.
+                portalCore.gameObject.SetActive(false);
+                logStuff("Moved portal world preview to its new position.  Opened: " + localDoorIsOpen.ToString());
                // disable the fringe particle system
                 if ( portalFringe ) { portalFringe.gameObject.SetActive(false); }
                 
@@ -200,7 +217,11 @@ public class DoorPortal : UdonSharpBehaviour
         portalCollider.enabled = opened;
         // If the preview/name are enabled, turn them off when closed, on when opened.
         if (showPreview) {
-            portalCore.gameObject.SetActive(opened);
+            // "Temp" hack since it's not wanting to disable mesh renderer at startup.
+            portalCore.gameObject.SetActive(true);
+            // Disable the mesh instead - otherwise the preview image seems to break.
+            var pcMesh = portalCore.gameObject.GetComponent<MeshRenderer>();
+            if (pcMesh) { pcMesh.enabled = opened; }
         }
         if (showWorldName) {
             portalNameTag.gameObject.SetActive(opened);
@@ -210,17 +231,7 @@ public class DoorPortal : UdonSharpBehaviour
 
     #endregion "Door open and close"
 
-    public void setupPortal() {
-        getPortalObjects();
-        hideShowPreview();
-        hideShowWorldName();
-        // Just hide the platform icons, I guess.  May make this an option later. 
-        if ( portalPlatformIcons ) { portalPlatformIcons.gameObject.SetActive(false); }
-        if (portalCollider) {
-            portalCollider.transform.localScale = new Vector3(1.0f,1.1f,0.1f);
-            portalCollider.enabled = localDoorIsOpen;
-        }
-    }
+
     
     public override void OnPlayerTriggerEnter(VRCPlayerApi player) {
         doorPortalAnimator.SetTrigger("EnterPortal");

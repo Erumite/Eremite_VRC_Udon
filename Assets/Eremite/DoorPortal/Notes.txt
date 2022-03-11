@@ -1,0 +1,13 @@
+--------------------------
+ToDo:
+
+Option to re-lock the door.
+Unlock animation.
+
+--------------------------
+Known Issues:
+
+Portal preview doesn't show world image when it is disabled/enabled.  
+  - Turning off mesh renderer seems to work after world load, but disabling it in world load shows that it is disbled in the debug log, but it is actually active when the world loads.
+  - Likely something that the client is doing while loading in that can't be replicated in Udon.
+  - Possible fix:  Move it under the map instead of disabling it when world loads, then move it to the right position when door is initially opened - toggle mesh renderer afterward.
