@@ -5,15 +5,6 @@ using VRC.Udon;
 
 public class DoorPortal : UdonSharpBehaviour
 {
-    [Header("Door Portal Config")]
-    [Tooltip("This Udon Behavior")]
-    public UdonBehaviour doorPortalScript;
-    [Tooltip("Animator that handles the Door opening/closing.")]
-    public Animator doorPortalAnimator;
-    [Tooltip("The VRCPortalMarker script set up with the world ID this door should lead to.")]
-    public VRC_PortalMarker portal;
-    [Tooltip("The doorknob - object that is interacted with to open/close the door.")]
-    public BoxCollider doorknobCollider;
     [Header("Door Portal Options")]
     [Tooltip("Show the world image at a specified location.")]
     public bool showPreview = false;
@@ -28,6 +19,7 @@ public class DoorPortal : UdonSharpBehaviour
     [Tooltip("Optionally scale the world name.")]
     public float showWorldNameSize = 1.0f;
 
+    [Header("Door Lock Settings")]
     [UdonSynced]
     [Tooltip("(SYNCED) If the door is locked by default, it will need to be unlocked before it can be opened and the portal used.")]
     public bool isLocked = false;
@@ -37,8 +29,10 @@ public class DoorPortal : UdonSharpBehaviour
     [Tooltip("Should the keyhole be destroyed when unlocked?")]
     public bool destroyKeyholeWhenUnlocked;
     [Tooltip("Audio to play when the door is locked and doorknob is clicked.")]
-    public AudioClip lockSound;
-    [Tooltip("Audio Source that handles the above clip.")]
+    public AudioClip lockedSound;
+    [Tooltip("Audio to play when the door is unlocked.")]
+    public AudioClip unlockSound;
+    [Tooltip("Audio Source that handles the above clips.")]
     public AudioSource lockSoundSource;
 
     [UdonSynced]
@@ -46,8 +40,13 @@ public class DoorPortal : UdonSharpBehaviour
     public bool doorIsOpen = false;
     private bool localDoorIsOpen;
 
-    [Tooltip("The value of the key required to open the door. (0 = no key value required, just an Unlock call)")]
-    public int keyValue = 0;
+    [Header("Door Portal Internals")]
+    [Tooltip("This Udon Behavior")]
+    public UdonBehaviour doorPortalScript;
+    [Tooltip("Animator that handles the Door opening/closing.")]
+    public Animator doorPortalAnimator;
+    [Tooltip("The VRCPortalMarker script set up with the world ID this door should lead to.")]
+    public VRC_PortalMarker portal;
 
     // optional debugging to log for dev.
     [Header("Debugging - Tag = (DoorPortal)")]
@@ -72,7 +71,7 @@ public class DoorPortal : UdonSharpBehaviour
     {
         setupPortal();
         // Set the lock sound - allow editing from UdonBehavior rather than updating the audio source.
-        lockSoundSource.clip = lockSound;
+        lockSoundSource.clip = lockedSound;
         // Run update after we've set up our baseline loaded state.
         OnDeserialization();
     }
@@ -159,6 +158,9 @@ public class DoorPortal : UdonSharpBehaviour
 
     public override void OnDeserialization(){
         if ( localIsLocked != isLocked ){
+            if ( isLocked == false && localIsLocked == true ) {
+                lockSoundSource.PlayOneShot(unlockSound);
+            }
             localIsLocked = isLocked;
         }
         // Destroy the keyhole if it's unlocked and the option is checked.
