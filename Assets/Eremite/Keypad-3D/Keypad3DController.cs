@@ -14,6 +14,8 @@ public class Keypad3DController : UdonSharpBehaviour
     public GameObject[] buttons;
     [ListView("Button Config")][LVHeader("PressSound")]
     public AudioClip[] pressSound;
+    [ListView("Button Config")][LVHeader("All Hear")]
+    public bool[] pressSoundNetworked;
 
     // Enter a password to match, a target UdonBehavior('s game object), and the event name. Can be networked.
     [Header("Passwords/Action Pairs")]
@@ -30,9 +32,14 @@ public class Keypad3DController : UdonSharpBehaviour
     // Internal and debug variables.
     private string passwordEntry = string.Empty;
     public bool logToDebug = false;
+    [UdonSynced]
+    public int networkedClip;
+    private int networkedClipLocal;
+    private UdonBehaviour ub;
 
-    // Don't really need to do anything to start.
-    void Start() {}
+    void Start() {
+        ub = (UdonBehaviour) gameObject.GetComponent(typeof(UdonBehaviour));
+    }
     
     // If debugging is checked, this outputs to VRChat's log and the Unity Console
     private void logStuff( string message ){
@@ -59,16 +66,37 @@ public class Keypad3DController : UdonSharpBehaviour
         passwordEntry = string.Empty;
     }
 
+    public override void OnDeserialization()
+    {
+        // If the clip has changed, play a press sound.
+        if (networkedClip != networkedClipLocal) {
+            ub.SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, "playPressSound");
+        }
+        networkedClipLocal = networkedClip;
+    }
+
     // We can't tell which object sent the message, so we select the one with the 'pressed' child object enabled
     // and get its name.  Match any special commands if there, otherwise append the sending object's name to password.
-    public async void KeyPress(){
+    public void KeyPress(){
         logStuff("Key Pressed!");
         string newText = string.Empty;
         for ( int b=0 ; b < buttons.Length ; b++ ) { 
             if ( buttons[b].transform.Find("pressed").gameObject.activeInHierarchy == true ) {
                 buttons[b].transform.Find("pressed").gameObject.SetActive(false);
                 newText=buttons[b].name;
-                pressAudioSource.PlayOneShot(pressSound[b]);
+                if (pressSoundNetworked[b]) {
+                    Networking.SetOwner(Networking.LocalPlayer, ub.gameObject);
+                    // Shitty hack to allow networkedClip to change even if it's the same button pressed.
+                    if (networkedClip == b){
+                        networkedClip = b + 9999;
+                    } else {
+                        networkedClip=b;
+                    }
+                    RequestSerialization();
+                    OnDeserialization();
+                } else {
+                    pressAudioSource.PlayOneShot(pressSound[b]);
+                }
                 break;
             }
         }
@@ -81,5 +109,12 @@ public class Keypad3DController : UdonSharpBehaviour
             logStuff("New Text: " + newText);
             logStuff("Password So Far: " + passwordEntry);
         }
+    }
+
+    public void playPressSound(){
+        int clip = networkedClip;
+        // Remove the 9999 hack for same-keypress.
+        if ( clip >= 9999 ) { clip=clip-9999; }
+        pressAudioSource.PlayOneShot(pressSound[clip]);
     }
 }
