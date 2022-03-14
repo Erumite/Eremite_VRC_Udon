@@ -269,14 +269,10 @@ public class NyxCameraSystem : UdonSharpBehaviour
     // I hate this, but it's somehow better than having to Re Init Unity's Random every time.
     private float fakeRandom(float seed, float min, float max, bool introunding) {
         // Modulo (Max-Min) gives a number between 0 and (Max-Min) ; then adding Min gives us between Min and Max
+        // To account for rounding, min and max are adjusted so min/max values aren't half as likely as the other possibilities.
+        // (max+.5)-(min-.5) == max + .5 - min + .5 == max - min + 1 
         float fake;
-        if (introunding) {
-            // To account for rounding, min and max are adjusted so min/max values aren't half as likely as the other possibilities.
-            // (max+.5)-(min-.5) == max + .5 - min + .5 == max - min + 1 
-            fake = ((seed*12345) % (max-min + 1)) + min;
-        } else {
-            fake = ((seed*12345) % (max-min)) + min;
-        }
+        fake = ((seed*12345) % (max-min + (introunding ? 1 : 0 ))) + min; 
         logStuff("Random between " + min.ToString() + " and " + max.ToString() + " : " + fake.ToString() + " | Int: " + ((int)fake).ToString());
         return fake;
     }
