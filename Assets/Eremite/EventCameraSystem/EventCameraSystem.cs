@@ -7,7 +7,7 @@ using VRC.SDKBase;
 using VRC.Udon;
 
 [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
-public class NyxCameraSystem : UdonSharpBehaviour
+public class EventCameraSystem : UdonSharpBehaviour
 {
     [Header("General Settings")]
     [Tooltip("This UdonBehavior.")]
