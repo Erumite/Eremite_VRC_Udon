@@ -149,9 +149,7 @@ public class EventCameraSystem : UdonSharpBehaviour
         previewCamera.transform.position = camPosition[_curCam].position;
         previewCamera.transform.rotation = camPosition[_curCam].rotation;
         previewCamera.targetTexture = camTex[_curCam];
-        previewCamera.enabled = true;
         previewCamera.Render();
-        previewCamera.enabled = false;
         if ( _curCam < _camCount - 1 ) {
             _curCam += 1;
         } else {
