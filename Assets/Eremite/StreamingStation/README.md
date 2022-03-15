@@ -3,11 +3,11 @@ This is for events where someone is either recording or streaming video of the w
 
 Demo World [here](https://vrchat.com/home/launch?worldId=wrld_ef6e6776-a6e6-445a-9325-5128929a86ed&instanceId=0)
 
-View of others in the world: 
+View of others in the world:
 
 https://user-images.githubusercontent.com/44117913/158314298-a324d1f7-6700-4cfe-a24c-9161cd025980.mp4
 
-View for the Streamer (the `"W" Get Up` message goes away after a few seconds): 
+View for the Streamer (the `"W" Get Up` message goes away after a few seconds):
 
 https://user-images.githubusercontent.com/44117913/158314344-1a3a45e0-4572-4036-96aa-1cff0e788213.mp4
 
@@ -20,6 +20,7 @@ https://user-images.githubusercontent.com/44117913/158314344-1a3a45e0-4572-4036-
  * `Stream Capsule Material` - Assign the material with the RenderTexture that the streamer will be capturing in the config.
  * `PostProcessing` - If you have Post Processing in the world (particularly bloom), make sure you add any of the game objects handling it to this array.  When the player is seated, they will disable the post processing locally, then re-enable it when they stand.
  * `Stream Capsule Material` - This is the material that is displayed to the streamer.  It can be swapped to another material if you need two streamers, recorders, etc.
+  * *Note*: If using the AVPro Stream player, there's a variant material that flips the U coords of the texture input.
  * If you have two streamers, you can edit the object in `Label Text Mesh` to whatever you want. (eg: "Streamer" and "Recorder")
  * Be sure to bake Occlusion Culling while the station is in the scene for occlusion to work properly.
 
