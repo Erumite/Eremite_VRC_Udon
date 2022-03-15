@@ -1,6 +1,8 @@
 # Stream Station
 This is for events where someone is either recording or streaming video of the world. (Podcasts, Concerts, etc). The idea is to reduce lag as much as possible and reduce possible interruptions to the streamer's video feed.
 
+Demo World [here](https://vrchat.com/home/launch?worldId=wrld_ef6e6776-a6e6-445a-9325-5128929a86ed&instanceId=0)
+
 ---
 
 ### Setup
