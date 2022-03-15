@@ -147,17 +147,17 @@ PrefabInstance:
     - target: {fileID: 1551522701478588067, guid: a2742d97b8e1fdf40be74d3b8faabebd,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10.07646
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1551522701478588067, guid: a2742d97b8e1fdf40be74d3b8faabebd,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.654891
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1551522701478588067, guid: a2742d97b8e1fdf40be74d3b8faabebd,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.0078793
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1551522701478588067, guid: a2742d97b8e1fdf40be74d3b8faabebd,
         type: 3}
@@ -193,32 +193,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1551522702389873663, guid: a2742d97b8e1fdf40be74d3b8faabebd,
-        type: 3}
-      propertyPath: serializationData.Prefab
-      value: 
-      objectReference: {fileID: 1551522702389873663, guid: a2742d97b8e1fdf40be74d3b8faabebd,
-        type: 3}
-    - target: {fileID: 1551522702389873663, guid: a2742d97b8e1fdf40be74d3b8faabebd,
-        type: 3}
-      propertyPath: serializationData.SerializedFormat
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1551522702389873663, guid: a2742d97b8e1fdf40be74d3b8faabebd,
-        type: 3}
-      propertyPath: serializationData.SerializationNodes.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1551522702389873663, guid: a2742d97b8e1fdf40be74d3b8faabebd,
-        type: 3}
-      propertyPath: serializationData.SerializationNodes.Array.data[0].Name
-      value: _backingUdonBehaviour
-      objectReference: {fileID: 0}
-    - target: {fileID: 1551522702389873663, guid: a2742d97b8e1fdf40be74d3b8faabebd,
-        type: 3}
-      propertyPath: serializationData.SerializationNodes.Array.data[0].Entry
-      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a2742d97b8e1fdf40be74d3b8faabebd, type: 3}
