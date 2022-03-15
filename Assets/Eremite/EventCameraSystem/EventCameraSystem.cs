@@ -166,10 +166,10 @@ public class EventCameraSystem : UdonSharpBehaviour
             }
             if ( Time.unscaledTime - _lastLocalAutoCamUpdate > _localDelayAutoCam && _manualOverride == false) {
                 _lastLocalAutoCamUpdate = Time.unscaledTime;
-                _localDelayAutoCam = fakeRandom(_lastLocalAutoCamUpdate, autoUpdateSecondsLow, autoUpdateSecondsHigh, false);
+                _localDelayAutoCam = _fakeRandom(_lastLocalAutoCamUpdate, autoUpdateSecondsLow, autoUpdateSecondsHigh, false);
                 TakeOwner();
                 if (randomizeCamera) {
-                    _localCurrentAutoCam = (int)fakeRandom(_lastLocalAutoCamUpdate, 0.0f, (float)(_autoEnabledCams.Length - 1), true);
+                    _localCurrentAutoCam = (int)_fakeRandom(_lastLocalAutoCamUpdate, 0.0f, (float)(_autoEnabledCams.Length - 1), true);
                     logStuff("AutoCam random switch to camera: " + _autoEnabledCams[_localCurrentAutoCam].ToString());
                 } else {
                     if (_localCurrentAutoCam < _autoEnabledCams.Length - 1 ) {
@@ -267,12 +267,12 @@ public class EventCameraSystem : UdonSharpBehaviour
     }
 
     // I hate this, but it's somehow better than having to Re Init Unity's Random every time.
-    private float fakeRandom(float seed, float min, float max, bool introunding) {
-        // Modulo (Max-Min) gives a number between 0 and (Max-Min) ; then adding Min gives us between Min and Max
-        // To account for rounding, min and max are adjusted so min/max values aren't half as likely as the other possibilities.
-        // (max+.5)-(min-.5) == max + .5 - min + .5 == max - min + 1 
+    // If we're rounding integers, need to fiddle with the range because unity always rounds down
+    //   when castint a float as an int, apparently. 
+    private float _fakeRandom(float seed, float min, float max, bool introunding) {
+        max = (introunding ? max + .999999f : max);
         float fake;
-        fake = ((seed*12345) % (max-min + (introunding ? 1 : 0 ))) + min; 
+        fake = ((seed*12345) % (max-min)) + min; 
         logStuff("Random between " + min.ToString() + " and " + max.ToString() + " : " + fake.ToString() + " | Int: " + ((int)fake).ToString());
         return fake;
     }
