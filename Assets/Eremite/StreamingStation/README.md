@@ -3,6 +3,15 @@ This is for events where someone is either recording or streaming video of the w
 
 Demo World [here](https://vrchat.com/home/launch?worldId=wrld_ef6e6776-a6e6-445a-9325-5128929a86ed&instanceId=0)
 
+View of others in the world: 
+https://user-images.githubusercontent.com/44117913/158314298-a324d1f7-6700-4cfe-a24c-9161cd025980.mp4
+
+View for the Streamer (the `"W" Get Up` message goes away after a few seconds): 
+
+
+https://user-images.githubusercontent.com/44117913/158314344-1a3a45e0-4572-4036-96aa-1cff0e788213.mp4
+
+
 ---
 
 ### Setup
