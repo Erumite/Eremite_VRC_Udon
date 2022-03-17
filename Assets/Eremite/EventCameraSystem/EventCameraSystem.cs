@@ -92,6 +92,9 @@ public class EventCameraSystem : UdonSharpBehaviour
     public string[] effectsAnimTrigger;
     [ListView("Effects")][LVHeader("Button")]
     public Button[] effectsButton;
+    [UdonSynced]
+    private int _currentEffect;
+    private int _localCurrentEffect;
 
     // internals for syncing preview camera position
     private GameObject[] _previewCameras;
@@ -111,7 +114,7 @@ public class EventCameraSystem : UdonSharpBehaviour
         }
     }
 
-    void Start(){
+    async void Start(){
         logStuff("Beginning intitial setup.");
         _camCount = camPosition.Length;
         _curCam = 0;
@@ -145,6 +148,11 @@ public class EventCameraSystem : UdonSharpBehaviour
                 logStuff(" * Added preview cam " + i.ToString() + " to AutoAllow (ArrayPos=" + _autoCount + ")");
                 _autoCount += 1;
             }
+        }
+        // Default state for FX system.
+        effectsQuad.enabled = false;
+        for (int i = 0; i < effectsButton.Length; i++){
+            effectsButton[i].enabled = true;
         }
         logStuff("End of Startup.");
     }
@@ -242,6 +250,13 @@ public class EventCameraSystem : UdonSharpBehaviour
             camLockToggle.isOn = _localCamLocked;
             logStuff("Toggled Cam Locking to " + _localCamLocked.ToString());
         }
+        if (_currentEffect != _localCurrentEffect){
+            _localCurrentEffect = _currentEffect;
+            effectsQuad.material = effectsMaterial[_localCurrentEffect];
+            effectsQuad.enabled = true;
+            effectsQuad.gameObject.GetComponent<Animator>().SetTrigger(effectsAnimTrigger[_localCurrentEffect]);
+            logStuff("Updated FX to new setting, sending triger: " + effectsAnimTrigger[_localCurrentEffect]);
+        }
     }
 
     public void updateMainCam(){
@@ -264,16 +279,18 @@ public class EventCameraSystem : UdonSharpBehaviour
     }
 
     public async void toggleFX(){
+        logStuff("Toggling FX");
         // handle button press - enable all buttons, look for disabled image, re-enable image, set button to disabled.
         for (int i = 0; i < effectsButton.Length; i++){
             if ( effectsButton[i].enabled == false ) {
-                effectsQuad.material = effectsMaterial[i];
-                effectsQuad.enabled = true;
-                effectsQuad.gameObject.GetComponent<Animator>().SetTrigger(effectsAnimTrigger[i]);
+                TakeOwner();
+                _currentEffect = i;
                 effectsButton[i].enabled = true;
                 break;
             }
         }
+        RequestSerialization();
+        OnDeserialization();
     }
 
     public void lockToggle() {
