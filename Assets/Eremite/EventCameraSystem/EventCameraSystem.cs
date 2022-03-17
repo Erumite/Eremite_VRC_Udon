@@ -259,6 +259,10 @@ public class EventCameraSystem : UdonSharpBehaviour
         }
     }
 
+
+    // Toggle the position of the main camera based on the button that has had its mesh renderer disabled by a button press.
+    //   If the mesh renderer is disabled (by button), re-enable it and set the activeCam to the corresponding value. 
+    //   Main logic for handling the transition to the new camera position is handled in OnDeserialization() and LateUpdate() (if lerping)
     public void updateMainCam(){
         for ( int i=0 ; i < _camCount ; i++ ) {
             if ( camButton[i].enabled == false ){
@@ -278,9 +282,10 @@ public class EventCameraSystem : UdonSharpBehaviour
         OnDeserialization();
     }
 
+    // Toggle the FX value based on button that was pressed - the button disables itself as a way to flag it as the one that was pressed
+    //  so we find the one with the disabled button, set current effect to the corresponding value, then handle the logic for toggling
+    //  in OnDeserialization() so it syncs.
     public async void toggleFX(){
-        logStuff("Toggling FX");
-        // handle button press - enable all buttons, look for disabled image, re-enable image, set button to disabled.
         for (int i = 0; i < effectsButton.Length; i++){
             if ( effectsButton[i].enabled == false ) {
                 TakeOwner();
@@ -293,6 +298,7 @@ public class EventCameraSystem : UdonSharpBehaviour
         OnDeserialization();
     }
 
+    // Basic synced toggle for camera lock - main logic handled in OnDeserialization()
     public void lockToggle() {
         TakeOwner();
         camLocked = camLockToggle.isOn;
@@ -300,6 +306,7 @@ public class EventCameraSystem : UdonSharpBehaviour
         OnDeserialization();
     }
 
+    // Basic synced toggle for auto cycling - main logic handled in OnDeserialization()
     public void toggleAutoCam(){
         TakeOwner();
         autoCycle = autoCycleToggle.isOn;
@@ -307,6 +314,7 @@ public class EventCameraSystem : UdonSharpBehaviour
         OnDeserialization();
     }
 
+    // Basic synced toggle for camera lerping during transitions - main logic handled in OnDeserialization()
     public void toggleLerpPosition(){
         TakeOwner();
         lerpPosition = lerpToggle.isOn;
@@ -316,7 +324,7 @@ public class EventCameraSystem : UdonSharpBehaviour
 
     // I hate this, but it's somehow better than having to Re Init Unity's Random every time.
     // If we're rounding integers, need to fiddle with the range because unity always rounds down
-    //   when castint a float as an int, apparently. 
+    //   when casting a float as an int, apparently. 
     private float _fakeRandom(float seed, float min, float max, bool introunding) {
         max = (introunding ? max + .999999f : max);
         float fake;
