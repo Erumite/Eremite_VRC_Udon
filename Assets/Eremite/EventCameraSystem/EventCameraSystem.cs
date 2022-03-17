@@ -212,7 +212,7 @@ public class EventCameraSystem : UdonSharpBehaviour
         }
         if (lerpPosition && _lerping){
             float _traveled = (Time.unscaledTime - _lerpStartTime) * _lerpSpeed;
-            float percentTraveled = _traveled / _lerpDistanceTotal;
+            float percentTraveled = Mathf.SmoothStep(0.0f, 1.0f, _traveled / _lerpDistanceTotal);
             mainCamera.transform.position = Vector3.Lerp(_lerpStartPosition.position, camPosition[_localActiveCam].position, percentTraveled);
             mainCamera.transform.rotation = Quaternion.Lerp(_lerpStartPosition.rotation, camPosition[_localActiveCam].rotation, percentTraveled);
             if (percentTraveled >= 1.0f) {
