@@ -2,6 +2,8 @@
 
 This is a keypad that can be customized to use 3D objects for the keys rather than a UI & Canvas system.  It's super flexible in terms of what the password can be, but requires a little bit of setup of all the buttons you plan on using.
 
+[Demo World](https://vrchat.com/home/launch?worldId=wrld_921c578e-d1df-4bad-be15-b519fc15501f&instanceId=0)  
+
 ### Setup
 
 Add the `Keypad3DController` UdonBehavior to any object. Set up:
