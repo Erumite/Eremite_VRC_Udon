@@ -14,6 +14,8 @@ public class EventCameraSystem : UdonSharpBehaviour
     public UdonBehaviour cameraController;
     [Tooltip("Preview material to be duplicated onto all the UI Buttons' render textures. (Probably an Unlit/Texture type).")]
     public Material previewMat;
+    [Tooltip("UI Text that displays the Owner's name.")]
+    public Text ownerText;
 
     [Header("Main Camera Setup")]
     [Tooltip("The main camera whose output is used for recording/streaming, etc.")]
@@ -81,6 +83,7 @@ public class EventCameraSystem : UdonSharpBehaviour
     private float _lerpDistanceTraveled;
     private float _lerpStartTime;
     private bool _lerping;
+    private bool _localLerping;
     private Transform _lerpStartPosition;
 
     [Header("Special Effects")]
@@ -155,6 +158,9 @@ public class EventCameraSystem : UdonSharpBehaviour
             effectsButton[i].enabled = true;
         }
         logStuff("End of Startup.");
+
+        // update owner text to show the current owner.
+        ownerText.text = Networking.GetOwner(cameraController.gameObject).displayName;
     }
 
     // Required for setting UdonSynced vars. 
@@ -191,24 +197,32 @@ public class EventCameraSystem : UdonSharpBehaviour
                 _lastLocalAutoCamUpdate = Time.unscaledTime;
                 _localDelayAutoCam = _fakeRandom(_lastLocalAutoCamUpdate, autoUpdateSecondsLow, autoUpdateSecondsHigh, false);
                 autoCyclePreviewSlider.value = 1.0f;
-                TakeOwner();
-                if (randomizeCamera) {
-                    _localCurrentAutoCam = (int)_fakeRandom(_lastLocalAutoCamUpdate, 0.0f, (float)(_autoEnabledCams.Length - 1), true);
-                    logStuff("AutoCam random switch to camera: " + _autoEnabledCams[_localCurrentAutoCam].ToString());
-                } else {
-                    if (_localCurrentAutoCam < _autoEnabledCams.Length - 1 ) {
-                        _localCurrentAutoCam += 1;
+                bool thisIsMine = Networking.IsOwner(Networking.LocalPlayer, cameraController.gameObject);
+                if (thisIsMine) {
+                    if (randomizeCamera ) {
+                        _localCurrentAutoCam = (int)_fakeRandom(_lastLocalAutoCamUpdate, 0.0f, (float)(_autoEnabledCams.Length - 1), true);
+                        logStuff("AutoCam random switch to camera: " + _autoEnabledCams[_localCurrentAutoCam].ToString());
                     } else {
-                        _localCurrentAutoCam = 0;
+                        if (_localCurrentAutoCam < _autoEnabledCams.Length - 1 ) {
+                            _localCurrentAutoCam += 1;
+                        } else {
+                            _localCurrentAutoCam = 0;
+                        }
+                        logStuff("AutoCam moving to next allowed camera: " + _autoEnabledCams[_localCurrentAutoCam].ToString());
                     }
-                    logStuff("AutoCam moving to next allowed camera: " + _autoEnabledCams[_localCurrentAutoCam].ToString());
+                    _activeCam = _autoEnabledCams[_localCurrentAutoCam];
+                    OnDeserialization();
+                    RequestSerialization();
                 }
-                _activeCam = _autoEnabledCams[_localCurrentAutoCam];
-                OnDeserialization();
-                RequestSerialization();
             } else if (!_manualOverride) {
                 autoCyclePreviewSlider.value = (Time.unscaledTime - _lastLocalAutoCamUpdate) / _localDelayAutoCam; 
             }
+        }
+        
+        // Just syncs the state of the checkbox.
+        if (_lerping != _localLerping) {
+            _localLerping = _lerping;
+            lerpToggle.enabled = _localLerping;
         }
         if (lerpPosition && _lerping){
             float _traveled = (Time.unscaledTime - _lerpStartTime) * _lerpSpeed;
@@ -259,6 +273,15 @@ public class EventCameraSystem : UdonSharpBehaviour
         }
     }
 
+    public override void OnOwnershipTransferred() {
+        bool thisIsMine = Networking.IsOwner(Networking.LocalPlayer, cameraController.gameObject);
+        if (thisIsMine) {
+            autoCyclePreviewSlider.gameObject.SetActive(_localAutoCycle);
+        } else {
+            autoCyclePreviewSlider.gameObject.SetActive(false);
+        }
+        ownerText.text = Networking.GetOwner(cameraController.gameObject).displayName;
+    }
 
     // Toggle the position of the main camera based on the button that has had its mesh renderer disabled by a button press.
     //   If the mesh renderer is disabled (by button), re-enable it and set the activeCam to the corresponding value. 
