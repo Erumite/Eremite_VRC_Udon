@@ -1139,7 +1139,7 @@ GameObject:
   - component: {fileID: 1789122496}
   - component: {fileID: 1789122495}
   - component: {fileID: 1789122494}
-  m_Layer: 0
+  m_Layer: 18
   m_Name: FXQuad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1951,7 +1951,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4074243
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: fd33c1b21f229e04dbf45b0fad442456, type: 2}
   m_TargetDisplay: 0
