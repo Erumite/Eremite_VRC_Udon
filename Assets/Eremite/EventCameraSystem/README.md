@@ -18,5 +18,5 @@ For a way to capture the MainCam output for streaming or recording, see the [Str
 #### ToDo:
 
 * SmoothStep Transitions between points while LERPing: https://docs.unity3d.com/ScriptReference/Mathf.SmoothStep.html
-* ScreenSpace overlay options/shaders (logos/FX/etc)
-* Preview next auto-transition time/manual override countdowns, etc. 
+* Alternate Transitions: Only one type active at once.
+  * Screen Wipe between old/new cam - use Preview rendertex for OldCam to avoid performance hit of two cameras.
