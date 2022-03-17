@@ -195,12 +195,14 @@ public class EventCameraSystem : UdonSharpBehaviour
             }
             if ( Time.unscaledTime - _lastLocalAutoCamUpdate > _localDelayAutoCam && _manualOverride == false) {
                 _lastLocalAutoCamUpdate = Time.unscaledTime;
-                _localDelayAutoCam = _fakeRandom(_lastLocalAutoCamUpdate, autoUpdateSecondsLow, autoUpdateSecondsHigh, false);
+                _localDelayAutoCam = Random.Range(autoUpdateSecondsLow, autoUpdateSecondsHigh + 1);
                 autoCyclePreviewSlider.value = 1.0f;
                 bool thisIsMine = Networking.IsOwner(Networking.LocalPlayer, cameraController.gameObject);
                 if (thisIsMine) {
                     if (randomizeCamera ) {
-                        _localCurrentAutoCam = (int)_fakeRandom(_lastLocalAutoCamUpdate, 0.0f, (float)(_autoEnabledCams.Length - 1), true);
+                        // Random.Range Int override doesn't include the max, so Length should return 0 to Length-1
+                        //      https://docs.unity3d.com/ScriptReference/Random.Range.html 
+                        _localCurrentAutoCam = Random.Range(0, _autoEnabledCams.Length);
                         logStuff("AutoCam random switch to camera: " + _autoEnabledCams[_localCurrentAutoCam].ToString());
                     } else {
                         if (_localCurrentAutoCam < _autoEnabledCams.Length - 1 ) {
@@ -343,16 +345,5 @@ public class EventCameraSystem : UdonSharpBehaviour
         lerpPosition = lerpToggle.isOn;
         RequestSerialization();
         OnDeserialization();
-    }
-
-    // I hate this, but it's somehow better than having to Re Init Unity's Random every time.
-    // If we're rounding integers, need to fiddle with the range because unity always rounds down
-    //   when casting a float as an int, apparently. 
-    private float _fakeRandom(float seed, float min, float max, bool introunding) {
-        max = (introunding ? max + .999999f : max);
-        float fake;
-        fake = ((seed*12345) % (max-min)) + min; 
-        logStuff("Random between " + min.ToString() + " and " + max.ToString() + " : " + fake.ToString() + " | Int: " + ((int)fake).ToString());
-        return fake;
     }
 }
