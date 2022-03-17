@@ -259,6 +259,13 @@ public class EventCameraSystem : UdonSharpBehaviour
         if (_localAutoCycle != autoCycle) {
             _localAutoCycle = autoCycle;
             autoCycleToggle.isOn = _localAutoCycle;
+            // Hide/Show the preview slider based on whether AutoCam is enabled and if we're the owner.
+            bool thisIsMine = Networking.IsOwner(Networking.LocalPlayer, cameraController.gameObject);
+            if (thisIsMine && _localAutoCycle) {
+                autoCyclePreviewSlider.gameObject.SetActive(true);
+            } else {
+                autoCyclePreviewSlider.gameObject.SetActive(false);
+            }
             logStuff("Toggled AutoCycle to " + _localAutoCycle.ToString());
         }
         if (_localCamLocked != camLocked) {
@@ -276,12 +283,6 @@ public class EventCameraSystem : UdonSharpBehaviour
     }
 
     public override void OnOwnershipTransferred() {
-        bool thisIsMine = Networking.IsOwner(Networking.LocalPlayer, cameraController.gameObject);
-        if (thisIsMine) {
-            autoCyclePreviewSlider.gameObject.SetActive(_localAutoCycle);
-        } else {
-            autoCyclePreviewSlider.gameObject.SetActive(false);
-        }
         ownerText.text = Networking.GetOwner(cameraController.gameObject).displayName;
     }
 
