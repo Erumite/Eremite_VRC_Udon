@@ -83,6 +83,16 @@ public class EventCameraSystem : UdonSharpBehaviour
     private bool _lerping;
     private Transform _lerpStartPosition;
 
+    [Header("Special Effects")]
+    [Tooltip("Mesh renderer for the quad that handles screen effects/overlays.\nMaterial: Will be applied to the mesh.\nAnim Trigger: Will be sent as an animation trigger to the FX plane.\nButton: The button that handles the preview/toggle.")]
+    public MeshRenderer effectsQuad;
+    [ListView("Effects")][LVHeader("Material")]
+    public Material[] effectsMaterial;
+    [ListView("Effects")][LVHeader("Anim Trigger")]
+    public string[] effectsAnimTrigger;
+    [ListView("Effects")][LVHeader("Button")]
+    public Button[] effectsButton;
+
     // internals for syncing preview camera position
     private GameObject[] _previewCameras;
     private int _camCount;
@@ -251,6 +261,19 @@ public class EventCameraSystem : UdonSharpBehaviour
         }
         RequestSerialization();
         OnDeserialization();
+    }
+
+    public async void toggleFX(){
+        // handle button press - enable all buttons, look for disabled image, re-enable image, set button to disabled.
+        for (int i = 0; i < effectsButton.Length; i++){
+            if ( effectsButton[i].enabled == false ) {
+                effectsQuad.material = effectsMaterial[i];
+                effectsQuad.enabled = true;
+                effectsQuad.gameObject.GetComponent<Animator>().SetTrigger(effectsAnimTrigger[i]);
+                effectsButton[i].enabled = true;
+                break;
+            }
+        }
     }
 
     public void lockToggle() {
