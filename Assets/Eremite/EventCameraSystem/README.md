@@ -16,4 +16,7 @@ For a way to capture the MainCam output for streaming or recording, see the [Str
 ---
 
 #### ToDo:
-(incoming)
+
+* SmoothStep Transitions between points while LERPing: https://docs.unity3d.com/ScriptReference/Mathf.SmoothStep.html
+* ScreenSpace overlay options/shaders (logos/FX/etc)
+* Preview next auto-transition time/manual override countdowns, etc. 

@@ -64,6 +64,8 @@ public class EventCameraSystem : UdonSharpBehaviour
     public float autoUpdateSecondsHigh = 20;
     [Tooltip("The UI Toggle that handles toggling Lock mode.")]
     public Toggle autoCycleToggle;
+    [Tooltip("Slider that shows time till next auto-cam.")]
+    public Slider autoCyclePreviewSlider;
 
     // Positional LERPing
     [Header("Extra Settings")]
@@ -155,16 +157,22 @@ public class EventCameraSystem : UdonSharpBehaviour
         } else {
             _curCam = 0;
         }
+
         if (_localAutoCycle && !_localCamLocked) {
             if ( _manualOverride == true ) {
-                if  (Time.unscaledTime - _manualOverrideTime > delayOnOverride){
+                float now = Time.unscaledTime;
+                if  (now - _manualOverrideTime > delayOnOverride){
                     _manualOverride = false;
+                    autoCyclePreviewSlider.value = 0.0f;
                     logStuff("Manual Override timeout elapsed - Resuming Auto Cycle.");
+                } else {
+                    autoCyclePreviewSlider.value = (now - _manualOverrideTime) / delayOnOverride;
                 }
             }
             if ( Time.unscaledTime - _lastLocalAutoCamUpdate > _localDelayAutoCam && _manualOverride == false) {
                 _lastLocalAutoCamUpdate = Time.unscaledTime;
                 _localDelayAutoCam = _fakeRandom(_lastLocalAutoCamUpdate, autoUpdateSecondsLow, autoUpdateSecondsHigh, false);
+                autoCyclePreviewSlider.value = 1.0f;
                 TakeOwner();
                 if (randomizeCamera) {
                     _localCurrentAutoCam = (int)_fakeRandom(_lastLocalAutoCamUpdate, 0.0f, (float)(_autoEnabledCams.Length - 1), true);
@@ -180,6 +188,8 @@ public class EventCameraSystem : UdonSharpBehaviour
                 _activeCam = _autoEnabledCams[_localCurrentAutoCam];
                 OnDeserialization();
                 RequestSerialization();
+            } else if (!_manualOverride) {
+                autoCyclePreviewSlider.value = (Time.unscaledTime - _lastLocalAutoCamUpdate) / _localDelayAutoCam; 
             }
         }
         if (lerpPosition && _lerping){
