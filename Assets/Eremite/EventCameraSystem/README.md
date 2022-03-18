@@ -21,3 +21,11 @@ For a way to capture the MainCam output for streaming or recording, see the [Str
 * Alternate Transitions: Only one type active at once.
   * Screen Wipe between old/new cam - use Preview rendertex for OldCam to avoid performance hit of two cameras.
 * Look-At support (camera always faces a specific target)
+
+# Maybe to do?
+* Allowlist for users who are able to interact with the camera.
+  * Lock/Unlock option to allow players to interact with controls.
+  * It may be best to just leave the game object disabled and enable it elsewhere via a password.
+* Optionally disallow preview for Main and/or preview cameras.
+  * Better performance if you're not running the cameras.
+  * Option to leave preview on if say, a guest on a show needs to see themselves, but don't want to render the more expensive main camera.
