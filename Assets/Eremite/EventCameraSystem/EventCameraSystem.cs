@@ -125,6 +125,7 @@ public class EventCameraSystem : UdonSharpBehaviour
         logStuff("Setting up camera materials and render textures.");
         mainCamImage.material = previewMat;
         mainCamImage.material.mainTexture = mainCamTex;
+        mainCamera.enabled = false;
         logStuff(" * Finished populating Main Camera.");
         for (int i=0 ; i<_camCount ; i++) {
             camButton[i].material = previewMat;
