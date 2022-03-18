@@ -232,6 +232,10 @@ public class EventCameraSystem : UdonSharpBehaviour
             mainCamera.transform.position = Vector3.Lerp(_lerpStartPosition.position, camPosition[_localActiveCam].position, percentTraveled);
             mainCamera.transform.rotation = Quaternion.Lerp(_lerpStartPosition.rotation, camPosition[_localActiveCam].rotation, percentTraveled);
             if (percentTraveled >= 1.0f) {
+                // Needs to be parented and zero'd out in case of an animated camera.
+                mainCamera.transform.parent = camPosition[_localActiveCam];
+                mainCamera.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
+                mainCamera.transform.localRotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
                 _lerping = false;
                 logStuff("Camera has LERP'd its way to its new position.");
             }
@@ -251,8 +255,10 @@ public class EventCameraSystem : UdonSharpBehaviour
             }
             _localActiveCam = _activeCam;
             if (!lerpPosition){
-                mainCamera.transform.position = camPosition[_localActiveCam].position;
-                mainCamera.transform.rotation = camPosition[_localActiveCam].rotation;
+                // Move instantly to the new location and zero out the position to account for moving cameras.
+                mainCamera.transform.parent = camPosition[_localActiveCam];
+                mainCamera.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
+                mainCamera.transform.localRotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
                 logStuff("Moved instantly to new cam position.");
             }
         }
