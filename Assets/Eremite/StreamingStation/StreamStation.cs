@@ -8,8 +8,9 @@ public class StreamStation : UdonSharpBehaviour
     [Header("Objects - Mouseover for Detail")]
     [Tooltip("Game object with udon behavior on it.")]
     public GameObject stationScriptGameObject;
+    [Tooltip("Cameras that should be toggled off until station is entered - enabled while seated.")]
+    public Camera[] streamCameras;
     [Tooltip("Blocker Colliders are colliders that spawn around the streamer once seated to prevent other players from walking near them.")]
-
     public GameObject[] blockerColliders;
     [Tooltip("Occlusion Blocks are objects meant to cause the streamer to occlude anything not seen through the camera to save frames.")]
     public OcclusionPortal streamerOcclusionPortal;
@@ -36,7 +37,7 @@ public class StreamStation : UdonSharpBehaviour
         }
     }
 
-    void Start()
+    async void Start()
     {
         // Initialize the default state.
         streamerOcclusionPortal.open = true;
@@ -47,6 +48,9 @@ public class StreamStation : UdonSharpBehaviour
         for (int i=0; i < blockerColliders.Length ; i++){
             blockerColliders[i].SetActive(false);
         }
+        for (int i=0; i < streamCameras.Length ; i++ ) {
+            streamCameras[i].enabled = false;
+        }
     }
     void OnStationEntered(VRCPlayerApi player){
         if (player.isLocal){
@@ -55,6 +59,9 @@ public class StreamStation : UdonSharpBehaviour
             streamerOcclusionPortal.open = false;
             for (int i=0; i < postProcessing.Length; i++) {
                 postProcessing[i].SetActive(false);
+            }
+            for (int i=0; i < streamCameras.Length ; i++ ) {
+                streamCameras[i].enabled = true;
             }
             isSeated = true;
             logStuff("You have entered the streamer station. (local)");
@@ -69,6 +76,9 @@ public class StreamStation : UdonSharpBehaviour
             streamerOcclusionPortal.open = true;
             for (int i=0; i < postProcessing.Length; i++) {
                 postProcessing[i].SetActive(true);
+            }
+            for (int i=0; i < streamCameras.Length ; i++ ) {
+                streamCameras[i].enabled = false;
             }
             isSeated = false;
             logStuff("You have exited the streamer station. (local)");

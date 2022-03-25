@@ -21,6 +21,8 @@ https://user-images.githubusercontent.com/44117913/158314344-1a3a45e0-4572-4036-
  * `PostProcessing` - If you have Post Processing in the world (particularly bloom), make sure you add any of the game objects handling it to this array.  When the player is seated, they will disable the post processing locally, then re-enable it when they stand.
  * `Stream Capsule Material` - This is the material that is displayed to the streamer.  It can be swapped to another material if you need two streamers, recorders, etc.
   * *Note*: If using the AVPro Stream player, there's a variant material that flips the U coords of the texture input.
+ * `Stream Cameras` - A list of cameras that are disabled at start, then toggled on only while seated.
+  * Useful if the camera doesn't need to be on for anyone else but the streamer.
  * If you have two streamers, you can edit the object in `Label Text Mesh` to whatever you want. (eg: "Streamer" and "Recorder")
  * Be sure to bake Occlusion Culling while the station is in the scene for occlusion to work properly.
 
