@@ -99,6 +99,17 @@ public class EventCameraSystem : UdonSharpBehaviour
     private int _currentEffect;
     private int _localCurrentEffect;
 
+    [Header("Look-At Settings")]
+    [Tooltip("UI Dropdown that handles the optional LookAt targets.")]
+    public Dropdown lookatDropdown;
+    [ListView("LookAt Targets")][LVHeader("Target")]
+    public Transform[] lookatTransform;
+    [ListView("LookAt Targets")][LVHeader("Text")]
+    public string lookatText;
+    [ListView("LookAt Targets")][LVHeader("Sprite")]
+    public Sprite lookatSprite;
+
+
     // internals for syncing preview camera position
     private GameObject[] _previewCameras;
     private int _camCount;

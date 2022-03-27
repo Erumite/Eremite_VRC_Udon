@@ -21,6 +21,7 @@ For a way to capture the MainCam output for streaming or recording, see the [Str
 * Alternate Transitions: Only one type active at once.
   * Screen Wipe between old/new cam - use Preview rendertex for OldCam to avoid performance hit of two cameras.
 * Look-At support (camera always faces a specific target)
+* Way to tell when the hand-held cam is being used (red light)
 
 # Maybe to do?
 * Allowlist for users who are able to interact with the camera.
