@@ -9,6 +9,9 @@ This is a keypad that can be customized to use 3D objects for the keys rather th
 Add the `Keypad3DController` UdonBehavior to any object. Set up:
 
 * `Press Audio Source` - The audio source that will play press sounds. Set this up however you want the audio to sound and originate from.
+* `Require Enter Key To Submit` - Need to press enter to submit a code, or check each time a key is pressed.
+  * If `TRUE`: Will only check password when the `-RETURN-` button is pressed.  `-CLR-` clears normally.  Entered password clears when `-RETURN-` is pressed.
+  * If `FALSE`: Will check password each time a key is pressed. `-RETURN-` is useless/unnecessary.  Requires a press of the `-CLR-` button to clear entered password.
 * Button Config - **Make sure you're using the UdonToolkit Editor** and click AddElement for each button you're utilizing.
   * `Button` - Assign the 3D Object that serves as a key.
   * `PressSound` - The sound it will make when pressed.
