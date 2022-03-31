@@ -7,7 +7,10 @@ using VRC.Udon;
 [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
 public class Keypad3DController : UdonSharpBehaviour
 {
+    [Tooltip("This is the source where the audio for keypresses play from.")]
     public AudioSource pressAudioSource;
+    [Tooltip("If false, it will check against existing passwords on each keypress and must be cleared with a -CLR- button.\nIf true, a -RETURN- button triggers checking passwords and clears entered characters on success or failure.")]
+    public bool requireEnterKeyToSubmit = true;
     // Buttons that interact with the Keypad Controller
     // The value added to the password corresponds with the name of the game object.
     // Special phrases apply: (eg: -CLR- or -RETURN-) :  See docs
@@ -34,7 +37,7 @@ public class Keypad3DController : UdonSharpBehaviour
     private string passwordEntry = string.Empty;
     public bool logToDebug = false;
     [UdonSynced]
-    public int networkedClip;
+    private int networkedClip;
     private int networkedClipLocal;
     private UdonBehaviour ub;
 
@@ -51,20 +54,22 @@ public class Keypad3DController : UdonSharpBehaviour
 
     // When the return key is pressed, check the current password vs the list of passwords.
     // If a match is found, send the event or network event and reset the password field.
-    private async void processPassword(string pass) {
+    private void processPassword(string pass) {
         logStuff("Committing password attempt: " + pass);
         for (int i=0; i<passWord.Length; i++){
             if ( passWord[i] == passwordEntry ) {
+                logStuff("Matched a password!");
                 UdonBehaviour t = (UdonBehaviour)udonTarget[i].GetComponent(typeof(UdonBehaviour));
                 if ( isNetworked[i] == true ) {
+                    logStuff("Sending networked event.");
                     t.SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, udonAction[i]);
                 } else {
+                    logStuff("Sending local event.");
                     t.SendCustomEvent(udonAction[i]);
                 }
                 break;
             }
         }
-        passwordEntry = string.Empty;
     }
 
     public override void OnDeserialization()
@@ -105,10 +110,13 @@ public class Keypad3DController : UdonSharpBehaviour
             passwordEntry = string.Empty;
         } else if ( newText == "-RETURN-" ) {
             processPassword(passwordEntry);
+            passwordEntry = string.Empty;
         } else {
             passwordEntry += newText;
-            logStuff("New Text: " + newText);
-            logStuff("Password So Far: " + passwordEntry);
+            logStuff("Password So Far: " + passwordEntry + "  | +(" + newText + ")");
+        }
+        if ( requireEnterKeyToSubmit == false ) {
+            processPassword(passwordEntry);
         }
     }
 
