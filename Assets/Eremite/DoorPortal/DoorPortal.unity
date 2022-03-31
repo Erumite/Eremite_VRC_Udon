@@ -3742,6 +3742,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: DoorPortal
       objectReference: {fileID: 0}
+    - target: {fileID: 7208737371316205336, guid: 6c8939117ed518941ac2d450e342dfa7,
+        type: 3}
+      propertyPath: _syncMethod
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c8939117ed518941ac2d450e342dfa7, type: 3}
 --- !u!4 &4369701202471907996
