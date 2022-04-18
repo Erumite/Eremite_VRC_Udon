@@ -210,14 +210,18 @@ public class DoorPortal : UdonSharpBehaviour
 
     public void OpenDoor(bool opened){
         doorPortalAnimator.SetBool("Open", opened);
-        portalCollider.enabled = opened;
+        if  (portalCollider ) {
+            portalCollider.enabled = opened;
+        }
         // If the preview/name are enabled, turn them off when closed, on when opened.
         if (showPreview) {
             // Can't disable mesh renderer at startup, so it gets moved.  Move it back to the right spot.
-            portalCore.SetPositionAndRotation(showPreviewLocation.position, showPreviewLocation.rotation);
-            // Disable the mesh instead - otherwise the preview image seems to break.
-            var pcMesh = portalCore.gameObject.GetComponent<MeshRenderer>();
-            if (pcMesh) { pcMesh.enabled = opened; }
+            if (portalCore){
+                portalCore.SetPositionAndRotation(showPreviewLocation.position, showPreviewLocation.rotation);
+                // Disable the mesh instead - otherwise the preview image seems to break.
+                var pcMesh = portalCore.gameObject.GetComponent<MeshRenderer>();
+                if (pcMesh) { pcMesh.enabled = opened; }
+            }
         }
         if (showWorldName) {
             portalNameTag.gameObject.SetActive(opened);
