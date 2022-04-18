@@ -16,14 +16,14 @@ public class Keypad3DButton : UdonSharpBehaviour
     // Ensure that the "pressed" game object is disabled when starting up.
     void Start()
     {
-        transform.Find("pressed").gameObject.SetActive(false);
+        gameObject.GetComponent<Collider>().enabled = true;
     }
 
     // On interaction, set the "pressed" object to active so the controller can
     //  tell which button was pressed.  Then send a message to the controller to
     //  process the interaction.
     public override void Interact(){
-        transform.Find("pressed").gameObject.SetActive(true);
+        gameObject.GetComponent<Collider>().enabled = false;
         keypadController.SendCustomEvent("KeyPress");
     }
 }

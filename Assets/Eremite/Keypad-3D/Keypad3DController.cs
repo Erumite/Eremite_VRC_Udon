@@ -76,7 +76,7 @@ public class Keypad3DController : UdonSharpBehaviour
     {
         // If the clip has changed, play a press sound.
         if (networkedClip != networkedClipLocal) {
-            ub.SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, "playPressSound");
+            playPressSound();
         }
         networkedClipLocal = networkedClip;
     }
@@ -87,8 +87,8 @@ public class Keypad3DController : UdonSharpBehaviour
         logStuff("Key Pressed!");
         string newText = string.Empty;
         for ( int b=0 ; b < buttons.Length ; b++ ) { 
-            if ( buttons[b].transform.Find("pressed").gameObject.activeInHierarchy == true ) {
-                buttons[b].transform.Find("pressed").gameObject.SetActive(false);
+            if ( buttons[b].GetComponent<Collider>().enabled == false ) {
+                buttons[b].GetComponent<Collider>().enabled = true;
                 newText=buttons[b].name;
                 if (pressSoundNetworked[b]) {
                     Networking.SetOwner(Networking.LocalPlayer, ub.gameObject);
