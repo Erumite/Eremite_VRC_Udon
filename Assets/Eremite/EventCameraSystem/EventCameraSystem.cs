@@ -74,6 +74,7 @@ public class EventCameraSystem : UdonSharpBehaviour
     [UdonSynced]
     [Tooltip("LERP between points when changing cameras for a smoother transition (fly-to).")]
     public bool lerpPosition = true;
+    private bool _localLerpPosition;
     [Tooltip("UI Toggle that turns lerping behavior on and off.")]
     public Toggle lerpToggle;
     [Tooltip("Transition time between positions (seconds)")]
@@ -192,6 +193,11 @@ public class EventCameraSystem : UdonSharpBehaviour
             _curCam += 1;
         } else {
             _curCam = 0;
+        }
+
+        if (_localLerpPosition != lerpPosition ) {
+            _localLerpPosition = lerpPosition;
+            lerpToggle.isOn = _localLerpPosition;
         }
 
         if (_localAutoCycle && !_localCamLocked) {
