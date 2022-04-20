@@ -646,6 +646,25 @@ Transform:
   m_Father: {fileID: 1369949538}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1978613002 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1551522702389873659, guid: a2742d97b8e1fdf40be74d3b8faabebd,
+    type: 3}
+  m_PrefabInstance: {fileID: 1551522701999708992}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1978613007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1978613002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 229740497, guid: 4ecd63eff847044b68db9453ce219299, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contentType: 1
 --- !u!23 &1330072848911090668
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1704,7 +1723,7 @@ PrefabInstance:
     - target: {fileID: 1551522702389873662, guid: a2742d97b8e1fdf40be74d3b8faabebd,
         type: 3}
       propertyPath: DynamicMaterials.Array.size
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1551522702389873662, guid: a2742d97b8e1fdf40be74d3b8faabebd,
         type: 3}
@@ -1715,31 +1734,36 @@ PrefabInstance:
         type: 3}
       propertyPath: DynamicMaterials.Array.data[1]
       value: 
-      objectReference: {fileID: -234017765832058602, guid: bca9230911d52de4abc2426c24cf64e6,
-        type: 3}
+      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 1551522702389873662, guid: a2742d97b8e1fdf40be74d3b8faabebd,
         type: 3}
       propertyPath: DynamicMaterials.Array.data[2]
       value: 
-      objectReference: {fileID: 2100000, guid: 7af23d28c3399c947a688590e574600f, type: 2}
+      objectReference: {fileID: 2100000, guid: 53d7e857fa150f74aa72a65626470c99, type: 2}
     - target: {fileID: 1551522702389873662, guid: a2742d97b8e1fdf40be74d3b8faabebd,
         type: 3}
       propertyPath: DynamicMaterials.Array.data[3]
       value: 
-      objectReference: {fileID: 2100000, guid: 53d7e857fa150f74aa72a65626470c99, type: 2}
+      objectReference: {fileID: 2100000, guid: 98ea6e8c65776c34a9b08da7bbfd0337, type: 2}
     - target: {fileID: 1551522702389873662, guid: a2742d97b8e1fdf40be74d3b8faabebd,
         type: 3}
       propertyPath: DynamicMaterials.Array.data[4]
       value: 
-      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: -234017765832058602, guid: bca9230911d52de4abc2426c24cf64e6,
+        type: 3}
     - target: {fileID: 1551522702389873662, guid: a2742d97b8e1fdf40be74d3b8faabebd,
         type: 3}
       propertyPath: DynamicMaterials.Array.data[5]
       value: 
-      objectReference: {fileID: 2100000, guid: 67142da7cd5f4534fbba2ea2ee977663, type: 2}
+      objectReference: {fileID: 2100000, guid: 7af23d28c3399c947a688590e574600f, type: 2}
     - target: {fileID: 1551522702389873662, guid: a2742d97b8e1fdf40be74d3b8faabebd,
         type: 3}
       propertyPath: DynamicMaterials.Array.data[6]
+      value: 
+      objectReference: {fileID: 2100000, guid: 67142da7cd5f4534fbba2ea2ee977663, type: 2}
+    - target: {fileID: 1551522702389873662, guid: a2742d97b8e1fdf40be74d3b8faabebd,
+        type: 3}
+      propertyPath: DynamicMaterials.Array.data[7]
       value: 
       objectReference: {fileID: 2100000, guid: e71b4bd56451f344db7bcd9895e9d15a, type: 2}
     - target: {fileID: 1551522702389873663, guid: a2742d97b8e1fdf40be74d3b8faabebd,
