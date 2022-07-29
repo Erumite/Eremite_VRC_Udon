@@ -60,6 +60,7 @@ public class DoorPortal : UdonSharpBehaviour
     private Transform portalCore;
     private Transform portalFringe;
     private BoxCollider portalCollider;
+    private bool internalsFound = false;
 
     // Uniform logging message for searching debug log.
     private void logStuff(string message){
@@ -92,28 +93,48 @@ public class DoorPortal : UdonSharpBehaviour
     #region "Portal Setup and Toggle"
      // Set all the objects in the portal - if not found, log to debug log.
     private void getPortalObjects() {
+        internalsFound = true;
         // Portal Graphics : Portal preview image and fringe particles parent.
         portalGraphics = portal.gameObject.transform.Find("PortalInternal(Clone)/PortalGraphics");
-        if (!portalGraphics) { logStuff("Couldn't find Portal Graphics transform.");}
+        if (!portalGraphics) { 
+            logStuff("Couldn't find Portal Graphics transform.");
+            internalsFound = false;
+        }
         // Portal Name Tag : the text of the world name that shows up above the portal normally.
-        portalNameTag = portal.transform.Find("PortalInternal(Clone)/NameTag");
-        if (!portalNameTag) { logStuff("Couldn't find Portal Name Tab transform.");}
+        portalNameTag = portal.transform.Find("PortalInternal(Clone)/Canvas/NameTag");
+        if (!portalNameTag) {
+            logStuff("Couldn't find Portal Name Tag transform.");
+            internalsFound = false;
+        }
         // PortalCore : Contains the preview image for the world.
         portalCore =  portal.transform.Find("PortalInternal(Clone)/PortalGraphics/PortalCore");
-        if (!portalCore) { logStuff("Couldn't find Portal Core transform.");}
+        if (!portalCore) {
+            logStuff("Couldn't find Portal Core transform.");
+            internalsFound = false;
+        }
         // Portal Fringe : Particle system around the edge of the portal.
         portalFringe = portal.transform.Find("PortalInternal(Clone)/PortalGraphics/PortalFringe");
-        if (!portalFringe) { logStuff("Couldn't find Portal Fringe transform.");}
+        if (!portalFringe) {
+            logStuff("Couldn't find Portal Fringe transform.");
+            internalsFound = false;
+        }
         // Platform Icons: Shows if the world is quest/PC compatible.
         portalPlatformIcons = portal.transform.Find("PortalInternal(Clone)/PlatformIcons");
-        if (!portalPlatformIcons) { logStuff("Couldn't find the Portal Platform Icons transform.");}
+        if (!portalPlatformIcons) {
+            logStuff("Couldn't find the Portal Platform Icons transform.");
+            internalsFound = false;
+        }
         // Portal Collider = the collider that you interact with to enter the portal.
         var portalColliderObject = portal.transform.Find("PortalInternal(Clone)");
         if (portalColliderObject) {
             portalCollider = portalColliderObject.GetComponent<BoxCollider>();
-            if (!portalCollider) { logStuff("Found PortalInternal, but couldn't find its box collider.");}
+            if (!portalCollider) {
+                logStuff("Found PortalInternal, but couldn't find its box collider.");
+                internalsFound = false;
+            }
         } else {
             logStuff("Couldn't find the PortalInternal(Clone) game object.");
+            internalsFound = false;
         }
     }
 
@@ -158,6 +179,9 @@ public class DoorPortal : UdonSharpBehaviour
     #region "Networking Stuff"
 
     public override void OnDeserialization(){
+        if ( ! internalsFound ) {
+            getPortalObjects();
+        }
         if ( localIsLocked != isLocked ){
             if ( isLocked == false && localIsLocked == true ) {
                 lockSoundSource.PlayOneShot(unlockSound);
