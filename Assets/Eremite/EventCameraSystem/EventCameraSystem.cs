@@ -307,8 +307,8 @@ public class EventCameraSystem : UdonSharpBehaviour
         }
     }
 
-    public override void OnOwnershipTransferred() {
-        ownerText.text = Networking.GetOwner(cameraController.gameObject).displayName;
+    public override void OnOwnershipTransferred(VRCPlayerApi player) {
+        ownerText.text = player.displayName;
     }
 
     // Toggle the position of the main camera based on the button that has had its mesh renderer disabled by a button press.
