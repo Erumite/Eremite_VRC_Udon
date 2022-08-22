@@ -19,7 +19,12 @@ You'll need to install these first as some of the stuff in here relies on them:
 * UdonSharp - https://github.com/MerlinVR/UdonSharp
 * UdonToolkit - https://github.com/orels1/UdonToolkit
 
+Ideally, use the [VRChat Creator Companion](https://vcc.docs.vrchat.com/) (VCC) to set up SDK, U#, player emulator, etc.  Then import UdonToolkit.
+
 Also, for best results, set the Editor to the `UdonToolkitEditor`:
+
+##### NOTE for UdonToolkit with Udon 1.0
+If you're getting errors, right-click in the UdonToolkit folder and create a new `UdonSharpAssemblyDefinition`, select it, then drag the `UdonToolkitRuntime` object into the `Source Assembly` field.
 
 ```
 Edit -> Project Settings -> "Udon Sharp" tab -> Default Behavior Editor = "UdonToolkit Editor"

@@ -260,7 +260,7 @@ MonoBehaviour:
   - {fileID: 1551522702389873660}
   spawnOrder: 2
   spawnOrientation: 0
-  ReferenceCamera: {fileID: 0}
+  ReferenceCamera: {fileID: 1551522702119712305}
   RespawnHeightY: -10
   ObjectBehaviourAtRespawnHeight: 0
   ForbidUserPortals: 0
@@ -387,7 +387,7 @@ MonoBehaviour:
   SynchronizePosition: 0
   AllowCollisionOwnershipTransfer: 0
   Reliable: 0
-  _syncMethod: 0
+  _syncMethod: 2
   serializedProgramAsset: {fileID: 11400000, guid: ee7b5c49c99b61445b3b0db90f2ba3b7,
     type: 2}
   programSource: {fileID: 0}
