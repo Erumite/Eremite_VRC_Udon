@@ -8,7 +8,7 @@ git lfs uninstall
 git lfs migrate export --everything --include .
 
 # Disable the LFS handler in .gitattributes
-sed -i '/filter=lfs/d'.gitattributes
+sed -i '/filter=lfs/d' .gitattributes
 
 # Verify that there are no files in LFS
 git lfs ls-files
