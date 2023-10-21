@@ -15,3 +15,7 @@ git lfs ls-files
 
 # Probably need to force-push with the mess this has made: 
 git push origin main --force
+
+# Everything in one:
+# git lfs uninstall && git lfs migrate export --everything --include . && sed -i '/filter=lfs/d' .gitattributes && git lfs ls-files
+# git push origin main --force
