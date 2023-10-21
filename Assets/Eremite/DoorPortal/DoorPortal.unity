@@ -717,10 +717,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 10
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 1
     m_MaxSize: 40
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -3549,6 +3549,25 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 3823829324507377419}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2017228796 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3823829324532964983, guid: 6c8939117ed518941ac2d450e342dfa7,
+    type: 3}
+  m_PrefabInstance: {fileID: 3823829324507377419}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &2017228798
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2017228796}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.01, y: 0.01, z: 0.01}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2069828393 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4580385395484662299, guid: 893b65f5f0cfb574788aa65419eeca00,
@@ -3805,7 +3824,7 @@ PrefabInstance:
     - target: {fileID: 1551522702389873662, guid: a2742d97b8e1fdf40be74d3b8faabebd,
         type: 3}
       propertyPath: DynamicMaterials.Array.size
-      value: 9
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1551522702389873662, guid: a2742d97b8e1fdf40be74d3b8faabebd,
         type: 3}
@@ -3861,22 +3880,22 @@ PrefabInstance:
         type: 3}
       propertyPath: DynamicMaterials.Array.data[2]
       value: 
-      objectReference: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 2100000, guid: 2291ace45949b1f4298dc927ac7e935d, type: 2}
     - target: {fileID: 1551522702389873662, guid: a2742d97b8e1fdf40be74d3b8faabebd,
         type: 3}
       propertyPath: DynamicMaterials.Array.data[3]
       value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+      objectReference: {fileID: 2100000, guid: 70356145a30d23f4d933cbc84dc025e2, type: 2}
     - target: {fileID: 1551522702389873662, guid: a2742d97b8e1fdf40be74d3b8faabebd,
         type: 3}
       propertyPath: DynamicMaterials.Array.data[4]
       value: 
-      objectReference: {fileID: 2100000, guid: 2291ace45949b1f4298dc927ac7e935d, type: 2}
+      objectReference: {fileID: 2100000, guid: 1c0f99c34316c6d4b9bef974e1d5c74d, type: 2}
     - target: {fileID: 1551522702389873662, guid: a2742d97b8e1fdf40be74d3b8faabebd,
         type: 3}
       propertyPath: DynamicMaterials.Array.data[5]
       value: 
-      objectReference: {fileID: 2100000, guid: 1c0f99c34316c6d4b9bef974e1d5c74d, type: 2}
+      objectReference: {fileID: 2100000, guid: 0c47ee7adfabe1940ad3711f385c0838, type: 2}
     - target: {fileID: 1551522702389873662, guid: a2742d97b8e1fdf40be74d3b8faabebd,
         type: 3}
       propertyPath: DynamicMaterials.Array.data[6]
@@ -4154,6 +4173,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3823829323038507739, guid: 6c8939117ed518941ac2d450e342dfa7,
+        type: 3}
+      propertyPath: roomId
+      value: wrld_71175cb1-e2cb-45e5-bd5a-5ed0cab9c523
       objectReference: {fileID: 0}
     - target: {fileID: 3823829324804002005, guid: 6c8939117ed518941ac2d450e342dfa7,
         type: 3}
@@ -6938,7 +6962,7 @@ PrefabInstance:
     - target: {fileID: 5617703966948748216, guid: 893b65f5f0cfb574788aa65419eeca00,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5617703966948748217, guid: 893b65f5f0cfb574788aa65419eeca00,
         type: 3}
