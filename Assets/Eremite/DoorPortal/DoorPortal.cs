@@ -247,7 +247,7 @@ public class DoorPortal : UdonSharpBehaviour
                 if (pcMesh) { pcMesh.enabled = opened; }
             }
         }
-        if (showWorldName) {
+        if (showWorldName && portalNameTag != null) {
             portalNameTag.gameObject.SetActive(opened);
         }
     }
