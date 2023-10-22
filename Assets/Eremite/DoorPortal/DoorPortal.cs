@@ -61,6 +61,14 @@ public class DoorPortal : UdonSharpBehaviour
     private Transform portalFringe;
     private BoxCollider portalCollider;
     private bool internalsFound = false;
+    
+    // Paths of objects
+    private string portalGraphicsPath = "PortalInternal(Clone)/PortalGraphics";
+    private string nametagPath = "PortalInternal(Clone)/Canvas/NameTag";
+    private string portalCorePath = "PortalInternal(Clone)/PortalGraphics/PortalCore";
+    private string portalFringePath = "PortalInternal(Clone)/PortalGraphics/PortalFringe";
+    private string platformIconsPath = "PortalInternal(Clone)/PlatformIcons";
+    private string clonePath = "PortalInternal(Clone)";
 
     // Uniform logging message for searching debug log.
     private void logStuff(string message){
@@ -71,6 +79,14 @@ public class DoorPortal : UdonSharpBehaviour
 
     void Start()
     {
+        #if !UNITY_ANDROID
+            portalGraphicsPath = "PortalInternalMobile(Clone)/PortalGraphics";
+            nametagPath = "PortalInternalMobile(Clone)/Canvas/NameTag";
+            portalCorePath = "PortalInternalMobile(Clone)/PortalGraphics/PortalCore";
+            portalFringePath = "PortalInternalMobile(Clone)/PortalGraphics/PortalFringe";
+            platformIconsPath = "PortalInternalMobile(Clone)/PlatformIcons";
+            clonePath = "PortalInternalMobile(Clone)";
+        #endif
         setupPortal();
         // Set the lock sound - allow editing from UdonBehavior rather than updating the audio source.
         lockSoundSource.clip = lockedSound;
@@ -95,37 +111,37 @@ public class DoorPortal : UdonSharpBehaviour
     private void getPortalObjects() {
         internalsFound = true;
         // Portal Graphics : Portal preview image and fringe particles parent.
-        portalGraphics = portal.gameObject.transform.Find("PortalInternal(Clone)/PortalGraphics");
+        portalGraphics = portal.gameObject.transform.Find(portalGraphicsPath);
         if (!portalGraphics) { 
             logStuff("Couldn't find Portal Graphics transform.");
             internalsFound = false;
         }
         // Portal Name Tag : the text of the world name that shows up above the portal normally.
-        portalNameTag = portal.transform.Find("PortalInternal(Clone)/Canvas/NameTag");
+        portalNameTag = portal.transform.Find(nametagPath);
         if (!portalNameTag) {
             logStuff("Couldn't find Portal Name Tag transform.");
             internalsFound = false;
         }
         // PortalCore : Contains the preview image for the world.
-        portalCore =  portal.transform.Find("PortalInternal(Clone)/PortalGraphics/PortalCore");
+        portalCore =  portal.transform.Find(portalCorePath);
         if (!portalCore) {
             logStuff("Couldn't find Portal Core transform.");
             internalsFound = false;
         }
         // Portal Fringe : Particle system around the edge of the portal.
-        portalFringe = portal.transform.Find("PortalInternal(Clone)/PortalGraphics/PortalFringe");
+        portalFringe = portal.transform.Find(portalFringePath);
         if (!portalFringe) {
             logStuff("Couldn't find Portal Fringe transform.");
             internalsFound = false;
         }
         // Platform Icons: Shows if the world is quest/PC compatible.
-        portalPlatformIcons = portal.transform.Find("PortalInternal(Clone)/PlatformIcons");
+        portalPlatformIcons = portal.transform.Find(platformIconsPath);
         if (!portalPlatformIcons) {
             logStuff("Couldn't find the Portal Platform Icons transform.");
             internalsFound = false;
         }
         // Portal Collider = the collider that you interact with to enter the portal.
-        var portalColliderObject = portal.transform.Find("PortalInternal(Clone)");
+        var portalColliderObject = portal.transform.Find(clonePath);
         if (portalColliderObject) {
             portalCollider = portalColliderObject.GetComponent<BoxCollider>();
             if (!portalCollider) {
