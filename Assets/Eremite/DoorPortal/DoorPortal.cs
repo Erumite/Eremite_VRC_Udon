@@ -63,13 +63,13 @@ public class DoorPortal : UdonSharpBehaviour
     private bool internalsFound = false;
     
     // Paths of objects
-    private string portalGraphicsPath = "PortalInternal(Clone)/PortalGraphics";
-    private string nametagPath = "PortalInternal(Clone)/Canvas/NameTag";
-    private string portalCorePath = "PortalInternal(Clone)/PortalGraphics/PortalCore";
-    private string portalFringePath = "PortalInternal(Clone)/PortalGraphics/PortalFringe";
-    private string platformIconsPath = "PortalInternal(Clone)/PlatformIcons";
-    private string clonePath = "PortalInternal(Clone)";
-
+    private string portalCoreBase = "PortalInternal(Clone)";
+    private string portalGraphicsPath;
+    private string nametagPath;
+    private string portalCorePath;
+    private string portalFringePath;
+    private string platformIconsPath;
+    
     // Uniform logging message for searching debug log.
     private void logStuff(string message){
         if (debugLog == true) {
@@ -80,13 +80,13 @@ public class DoorPortal : UdonSharpBehaviour
     void Start()
     {
         #if UNITY_ANDROID
-            portalGraphicsPath = "PortalInternalMobile(Clone)/PortalGraphics";
-            nametagPath = "PortalInternalMobile(Clone)/Canvas/NameTag";
-            portalCorePath = "PortalInternalMobile(Clone)/PortalGraphics/PortalCore";
-            portalFringePath = "PortalInternalMobile(Clone)/PortalGraphics/PortalFringe";
-            platformIconsPath = "PortalInternalMobile(Clone)/PlatformIcons";
-            clonePath = "PortalInternalMobile(Clone)";
+            portalCoreBase = "PortalInternalMobile(Clone)";
         #endif
+        portalGraphicsPath = portalCoreBase + "/PortalGraphics";
+        nametagPath = portalCoreBase + "/Canvas/NameTag";
+        portalCorePath = portalCoreBase + "/PortalGraphics/PortalCore";
+        portalFringePath = portalCoreBase + "/PortalGraphics/PortalFringe";
+        platformIconsPath = portalCoreBase + "/PlatformIcons";
         setupPortal();
         // Set the lock sound - allow editing from UdonBehavior rather than updating the audio source.
         lockSoundSource.clip = lockedSound;
@@ -141,7 +141,7 @@ public class DoorPortal : UdonSharpBehaviour
             internalsFound = false;
         }
         // Portal Collider = the collider that you interact with to enter the portal.
-        var portalColliderObject = portal.transform.Find(clonePath);
+        var portalColliderObject = portal.transform.Find(portalCoreBase);
         if (portalColliderObject) {
             portalCollider = portalColliderObject.GetComponent<BoxCollider>();
             if (!portalCollider) {
