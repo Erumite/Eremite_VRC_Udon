@@ -3870,17 +3870,17 @@ PrefabInstance:
         type: 3}
       propertyPath: DynamicMaterials.Array.data[0]
       value: 
-      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 2100000, guid: 2291ace45949b1f4298dc927ac7e935d, type: 2}
     - target: {fileID: 1551522702389873662, guid: a2742d97b8e1fdf40be74d3b8faabebd,
         type: 3}
       propertyPath: DynamicMaterials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: 53d7e857fa150f74aa72a65626470c99, type: 2}
+      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 1551522702389873662, guid: a2742d97b8e1fdf40be74d3b8faabebd,
         type: 3}
       propertyPath: DynamicMaterials.Array.data[2]
       value: 
-      objectReference: {fileID: 2100000, guid: 2291ace45949b1f4298dc927ac7e935d, type: 2}
+      objectReference: {fileID: 2100000, guid: 53d7e857fa150f74aa72a65626470c99, type: 2}
     - target: {fileID: 1551522702389873662, guid: a2742d97b8e1fdf40be74d3b8faabebd,
         type: 3}
       propertyPath: DynamicMaterials.Array.data[3]
