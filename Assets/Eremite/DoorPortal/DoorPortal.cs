@@ -79,7 +79,7 @@ public class DoorPortal : UdonSharpBehaviour
 
     void Start()
     {
-        #if !UNITY_ANDROID
+        #if UNITY_ANDROID
             portalGraphicsPath = "PortalInternalMobile(Clone)/PortalGraphics";
             nametagPath = "PortalInternalMobile(Clone)/Canvas/NameTag";
             portalCorePath = "PortalInternalMobile(Clone)/PortalGraphics/PortalCore";
