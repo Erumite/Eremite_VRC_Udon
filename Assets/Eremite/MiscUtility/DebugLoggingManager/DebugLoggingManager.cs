@@ -10,39 +10,44 @@ using VRC.Udon;
 //   * Including class and game object names is useful for narrowing down the behavior with problems.
 //
 //  Example debugging in format:  (World Name) [Udon Class] {Game Object Name} Message goes here.
-//      public DebugLoggingManager debugger;
-//      private string debugString;
+
+// public class MyClassThatDoesCoolStuff : UdonSharpBehaviour {
+//     public DebugLoggingManager debugger;
+//     private string debugString;
 //
-//      void Start() {
-//         debugString = "[" + this.GetUdonTypeName() + "] {" + this.name + "} " ;
-//      }
-//
-//      private void logDebug(string s){
+//     void Start() {
+//         debugString = $"[{this.GetUdonTypeName()}] <{this.name}> " ;
+//     }
+//     private void logDebug(string s){
 //          if (debugger == null){return;}
-//          debugger.Log(debugString + s);
-//      }
-//
+//          debugger.Log($"{debugString}{s}");
+//     }
+//     private void logWarning(string s){
+//          if (debugger == null){return;}
+//          debugger.Log($"{debugString}{s}");
+//     }
+// }
+
 //  Send a message to the debugging function:
 //      debugLog("a thing has happened.");
-//
+
 //  Enable debugging from script:
 //      debugger.enableDebugging(true);
 
-//  Can't be "None" or it can't receive events
-//  This can probably be changed to None if enabling logging after world load isn't needed.
 [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
 public class DebugLoggingManager : UdonSharpBehaviour
 {
     [Tooltip("Appended to the very start of the debug log - typically world name.  Useful for searching for all events from a world.")]
-    public string header = "My World";
+    [SerializeField]
+    private string header = "My World";
     [Tooltip("Enable debugging on all objects referencing this script.")]
     public bool logDebug = false;
     [Tooltip("Enable warnings on all objects referencing this script.")]
     public bool logWarnings = false;
 
     void Start(){
-        header = "(" + header + ") ";
-        Log("Debugger started!   Debugging: " + (logDebug ? "ON" : "OFF") + " | Warnings: " + (logWarnings ? "ON" : "OFF")); 
+        header = $"({header}) ";
+        Log($"Debugger started!   Debugging: {logDebug} | Warnings: {logWarnings}");
     }
 
     public void Log(string s){

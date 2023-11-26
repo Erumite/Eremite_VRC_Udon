@@ -6,11 +6,12 @@ using VRC.Udon;
 
 public class DebugLoggingBoilerplate : UdonSharpBehaviour
 {
-    public DebugLoggingManager debugger;
+    [SerializeField]
+    private DebugLoggingManager debugger;
     private string debugString;
 
     void Start() {
-        debugString = "[" + this.GetUdonTypeName() + "] {" + this.name + "} " ;
+        debugString = $"[{this.GetUdonTypeName()}] <{this.name}> " ;
         logDebug("Finished running startup!");
         debugger.enableDebugging(false);
         logDebug("I won't log this message at all.");
@@ -21,10 +22,10 @@ public class DebugLoggingBoilerplate : UdonSharpBehaviour
 
     private void logDebug(string s){
          if (debugger == null){return;}
-         debugger.Log(debugString + s);
+         debugger.Log($"{debugString}{s}");
     }
     private void logWarning(string s){
          if (debugger == null){return;}
-         debugger.Log(debugString + s);
+         debugger.Warn($"{debugString}{s}");
     }
 }
