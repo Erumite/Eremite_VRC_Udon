@@ -403,7 +403,7 @@ PlayerSettings:
   - m_BuildTarget: iOSSupport
     m_GraphicsJobs: 0
   - m_BuildTarget: WindowsStandaloneSupport
-    m_GraphicsJobs: 0
+    m_GraphicsJobs: 1
   - m_BuildTarget: XboxOnePlayer
     m_GraphicsJobs: 1
   - m_BuildTarget: LuminSupport
@@ -733,7 +733,7 @@ PlayerSettings:
     PS5: UNITY_POST_PROCESSING_STACK_V2
     QNX: UNITY_POST_PROCESSING_STACK_V2
     Stadia: UNITY_POST_PROCESSING_STACK_V2
-    Standalone: UDON;VRC_SDK_VRCSDK3;UNITY_POST_PROCESSING_STACK_V2;AMPLIFY_SHADER_EDITOR;UDONSHARP
+    Standalone: UDON;VRC_SDK_VRCSDK3;UNITY_POST_PROCESSING_STACK_V2;AMPLIFY_SHADER_EDITOR;UDONSHARP;VRC_ENABLE_PLAYER_PERSISTENCE
     VisionOS: UNITY_POST_PROCESSING_STACK_V2
     WebGL: UNITY_POST_PROCESSING_STACK_V2
     Windows Store Apps: UNITY_POST_PROCESSING_STACK_V2
@@ -857,7 +857,7 @@ PlayerSettings:
   projectName: 
   organizationId: 
   cloudEnabled: 0
-  legacyClampBlendShapeWeights: 0
+  legacyClampBlendShapeWeights: 1
   hmiLoadingImage: {fileID: 0}
   platformRequiresReadableAssets: 0
   virtualTexturingSupportEnabled: 0
